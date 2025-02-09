@@ -2123,7 +2123,290 @@ const careerPaths = {
             ]
         },
 
-        // Would you like me to continue with more careers? I have many more combinations to cover.
+        // High Income - Technical/Math Focus ($1M+ potential)
+        {
+            title: "Hedge Fund Manager",
+            category: "BUSINESS",
+            description: "Manage investment portfolios and complex financial strategies",
+            interests: ["Technical", "Creative"],
+            subjects: ["Math", "Science"],
+            stressLevels: ["High"],
+            requirements: {
+                highSchool: {
+                    gpa: "4.0",
+                    courses: ["AP Calculus BC", "AP Statistics", "AP Economics"],
+                    activities: ["Investment Club", "Math Team", "Debate"]
+                }
+            },
+            education: ["Bachelor's in Mathematics/Economics", "MBA from Top School", "CFA"],
+            skills: ["Quantitative Analysis", "Risk Management", "Financial Modeling"],
+            certifications: ["CFA", "Series 7", "Series 63"],
+            progression: {
+                entryLevel: {
+                    salary: 150000,
+                    years: "0-2"
+                },
+                midLevel: {
+                    salary: 400000,
+                    years: "3-5"
+                },
+                seniorLevel: {
+                    salary: 1000000,
+                    years: "6-10"
+                },
+                expertLevel: {
+                    salary: 5000000,
+                    years: "10+"
+                }
+            },
+            workEnvironment: {
+                hours: 70,
+                location: "Office/Trading Floor"
+            },
+            funFact: "Top hedge fund managers can earn over $1 billion in a single year! 💰",
+            futureOutlook: "Highly Competitive",
+            growthRate: "10% annually"
+        },
+
+        // High Income - Creative/Technical Mix ($500k+ potential)
+        {
+            title: "Tech Startup Founder",
+            category: "BUSINESS",
+            description: "Create and grow innovative technology companies",
+            interests: ["Creative", "Technical"],
+            subjects: ["Math", "Science", "Art"],
+            stressLevels: ["High"],
+            requirements: {
+                highSchool: {
+                    gpa: "3.8+",
+                    courses: ["AP Computer Science", "Business", "Psychology"],
+                    activities: ["Entrepreneurship Club", "Coding Projects", "Leadership Roles"]
+                }
+            },
+            education: ["Bachelor's in Computer Science or Business", "MBA advantageous"],
+            skills: ["Programming", "Leadership", "Business Strategy", "Innovation"],
+            certifications: ["Project Management", "Tech Certifications"],
+            progression: {
+                entryLevel: {
+                    salary: 100000,
+                    years: "0-2"
+                },
+                midLevel: {
+                    salary: 250000,
+                    years: "3-5"
+                },
+                seniorLevel: {
+                    salary: 500000,
+                    years: "6-8"
+                },
+                expertLevel: {
+                    salary: 2000000,
+                    years: "8+"
+                }
+            },
+            workEnvironment: {
+                hours: 80,
+                location: "Office/Remote"
+            },
+            funFact: "The average age of successful startup founders is 45! 🚀",
+            futureOutlook: "Highly Variable",
+            growthRate: "Exponential Potential"
+        },
+
+        // High Income - Social/Creative Focus ($250k+ potential)
+        {
+            title: "High-End Plastic Surgeon",
+            category: "MEDICAL",
+            description: "Perform cosmetic and reconstructive surgery",
+            interests: ["Social", "Technical", "Creative"],
+            subjects: ["Science", "Art"],
+            stressLevels: ["High"],
+            requirements: {
+                highSchool: {
+                    gpa: "4.0",
+                    courses: ["AP Biology", "AP Chemistry", "Art"],
+                    activities: ["Pre-med Programs", "Art Classes", "Volunteer at Hospitals"]
+                }
+            },
+            education: [
+                "Bachelor's in Pre-med",
+                "Medical School (MD)",
+                "Plastic Surgery Residency (6 years)",
+                "Fellowship in Specialized Area"
+            ],
+            skills: ["Surgical Expertise", "Artistic Vision", "Patient Care"],
+            certifications: ["Board Certified Plastic Surgeon", "Specialized Certifications"],
+            progression: {
+                entryLevel: {
+                    salary: 300000,
+                    years: "0-2"
+                },
+                midLevel: {
+                    salary: 500000,
+                    years: "3-5"
+                },
+                seniorLevel: {
+                    salary: 800000,
+                    years: "6-10"
+                },
+                expertLevel: {
+                    salary: 1500000,
+                    years: "10+"
+                }
+            },
+            workEnvironment: {
+                hours: 55,
+                location: "Private Practice/Hospital"
+            },
+            funFact: "Plastic surgeons train for an average of 14 years after high school! 🏥",
+            futureOutlook: "Consistently Growing",
+            growthRate: "15% annually"
+        },
+        // ULTRA HIGH INCOME ($5M+)
+        {
+            title: "Global Investment Firm CEO",
+            category: "BUSINESS",
+            description: "Lead a major global investment management firm",
+            interests: ["Technical", "Social"],
+            subjects: ["Math", "Economics"],
+            stressLevels: ["High"],
+            requirements: {
+                highSchool: {
+                    gpa: "4.0",
+                    courses: ["AP Calculus BC", "AP Economics", "AP Statistics"],
+                    activities: ["Investment Club President", "Debate Team", "Student Government"]
+                }
+            },
+            education: [
+                "Bachelor's in Economics/Mathematics from Top University",
+                "MBA from Elite Business School",
+                "CFA Charter"
+            ],
+            skills: ["Leadership", "Financial Strategy", "Risk Management"],
+            certifications: ["CFA", "Series 7", "Series 63", "Series 24"],
+            progression: {
+                entryLevel: {
+                    salary: 200000,
+                    years: "0-2"
+                },
+                midLevel: {
+                    salary: 500000,
+                    years: "3-5"
+                },
+                seniorLevel: {
+                    salary: 2000000,
+                    years: "6-10"
+                },
+                expertLevel: {
+                    salary: 10000000,
+                    years: "10+"
+                }
+            },
+            workEnvironment: {
+                hours: 80,
+                location: "Global Offices"
+            },
+            funFact: "Top CEOs often make more in a day than the average person makes in a year! 💼",
+            futureOutlook: "Highly Competitive",
+            growthRate: "Top 1% of earners"
+        },
+        {
+            title: "Professional Sports Team Owner",
+            category: "BUSINESS",
+            description: "Own and operate professional sports franchises",
+            interests: ["Business", "Social", "Creative"],
+            subjects: ["Math", "Business", "Psychology"],
+            stressLevels: ["High"],
+            requirements: {
+                highSchool: {
+                    gpa: "3.8+",
+                    courses: ["Business", "Economics", "Statistics"],
+                    activities: ["Sports Management", "Business Club", "Team Sports"]
+                }
+            },
+            education: [
+                "Bachelor's in Business Administration",
+                "MBA or Sports Management degree",
+                "Significant business success required"
+            ],
+            skills: ["Business Strategy", "Negotiation", "Sports Management"],
+            certifications: ["Sports Management", "Business Leadership"],
+            progression: {
+                entryLevel: {
+                    salary: 500000,
+                    years: "0-5"
+                },
+                midLevel: {
+                    salary: 2000000,
+                    years: "5-10"
+                },
+                seniorLevel: {
+                    salary: 5000000,
+                    years: "10-15"
+                },
+                expertLevel: {
+                    salary: 20000000,
+                    years: "15+"
+                }
+            },
+            workEnvironment: {
+                hours: 60,
+                location: "Multiple Locations"
+            },
+            funFact: "Some sports team owners see their franchise value increase by billions! 🏆",
+            futureOutlook: "Limited Opportunities",
+            growthRate: "Franchise dependent"
+        },
+
+        // VERY HIGH INCOME ($1M-$5M)
+        {
+            title: "Quantum Computing Entrepreneur",
+            category: "TECH",
+            description: "Found and lead quantum computing companies",
+            interests: ["Technical", "Creative"],
+            subjects: ["Physics", "Math", "Computer Science"],
+            stressLevels: ["High"],
+            requirements: {
+                highSchool: {
+                    gpa: "4.0",
+                    courses: ["AP Physics", "AP Computer Science", "Advanced Math"],
+                    activities: ["Physics Club", "Programming Competitions", "Research Projects"]
+                }
+            },
+            education: [
+                "PhD in Quantum Physics/Computing",
+                "Post-doctoral research",
+                "Business education recommended"
+            ],
+            skills: ["Quantum Mechanics", "Programming", "Business Development"],
+            certifications: ["Quantum Computing Specializations", "Tech Patents"],
+            progression: {
+                entryLevel: {
+                    salary: 150000,
+                    years: "0-3"
+                },
+                midLevel: {
+                    salary: 400000,
+                    years: "4-7"
+                },
+                seniorLevel: {
+                    salary: 1000000,
+                    years: "8-12"
+                },
+                expertLevel: {
+                    salary: 3000000,
+                    years: "12+"
+                }
+            },
+            workEnvironment: {
+                hours: 70,
+                location: "Research Labs/Offices"
+            },
+            funFact: "Quantum computing could revolutionize everything from medicine to space travel! 🌌",
+            futureOutlook: "Exponential Growth",
+            growthRate: "30% annually"
+        }
+        // Would you like me to continue with more permutations?
     ]
 };
 
@@ -2154,18 +2437,24 @@ function analyzePath() {
         
         // Filter matches by work hours and income
         const filteredMatches = matches.filter(career => {
-            const salaryMatch = career.salary.length >= (
-                incomeGoal >= 5000000 ? 5 :  // $5M+ requires highest salary rating
-                incomeGoal >= 1000000 ? 4 :  // $1M requires very high salary rating
-                incomeGoal >= 500000 ? 3 :   // $500K requires high salary rating
-                incomeGoal >= 250000 ? 2 :   // $250K requires above average salary rating
-                1                            // Up to $100K matches any salary rating
-            );
+            // Check if career has progression data
+            if (!career.progression) return false;
+
+            // Match based on expert level salary
+            const expertSalary = career.progression.expertLevel.salary;
+            const salaryMatch = 
+                incomeGoal >= 5000000 ? expertSalary >= 5000000 :  // $5M+
+                incomeGoal >= 1000000 ? expertSalary >= 1000000 :  // $1M+
+                incomeGoal >= 500000 ? expertSalary >= 500000 :    // $500K+
+                incomeGoal >= 250000 ? expertSalary >= 250000 :    // $250K+
+                true;                                              // Any salary
             
-            // Assume careers have typical hours ranges
-            const hoursMatch = workHours <= 40 ? career.stressLevels.includes('Low') || career.stressLevels.includes('Medium') :
-                             workHours <= 60 ? career.stressLevels.includes('Medium') || career.stressLevels.includes('High') :
-                             career.stressLevels.includes('High');
+            // Match based on work hours and stress level
+            const hoursMatch = workHours <= 40 ? 
+                career.stressLevels.includes('Low') || career.stressLevels.includes('Medium') :
+                workHours <= 60 ? 
+                    career.stressLevels.includes('Medium') || career.stressLevels.includes('High') :
+                    career.stressLevels.includes('High');
             
             return salaryMatch && hoursMatch;
         });
@@ -2190,6 +2479,81 @@ function findMatchingCareers(preferences) {
     });
 }
 
+// Add this helper function for calculating cumulative earnings
+function calculateCumulativeEarnings(progression) {
+    const earnings = {
+        fiveYear: 0,
+        tenYear: 0,
+        twentyYear: 0,
+        lifetime: 0
+    };
+    
+    // Calculate 5-year earnings
+    earnings.fiveYear = (progression.entryLevel.salary * 2) + // First 2 years
+                       (progression.midLevel.salary * 3);      // Next 3 years
+    
+    // Calculate 10-year earnings
+    earnings.tenYear = earnings.fiveYear +
+                      (progression.midLevel.salary * 2) +     // 2 more mid-level years
+                      (progression.seniorLevel.salary * 3);   // 3 senior years
+    
+    // Calculate 20-year earnings
+    earnings.twentyYear = earnings.tenYear +
+                         (progression.seniorLevel.salary * 5) +  // 5 more senior years
+                         (progression.expertLevel.salary * 5);   // 5 expert years
+    
+    // Calculate lifetime earnings (40-year career)
+    earnings.lifetime = earnings.twentyYear +
+                       (progression.expertLevel.salary * 20);    // 20 more expert years
+    
+    return earnings;
+}
+
+// Add this helper function to calculate yearly earnings
+function calculateYearlyEarnings(progression) {
+    const yearlyEarnings = [];
+    let currentYear = 1;
+    
+    // Entry Level (Years 1-2)
+    for (let i = 0; i < 2; i++) {
+        yearlyEarnings.push({
+            year: currentYear++,
+            salary: progression.entryLevel.salary,
+            level: 'Entry Level'
+        });
+    }
+    
+    // Mid Level (Years 3-5)
+    for (let i = 0; i < 3; i++) {
+        yearlyEarnings.push({
+            year: currentYear++,
+            salary: progression.midLevel.salary,
+            level: 'Mid Level'
+        });
+    }
+    
+    // Senior Level (Years 6-10)
+    for (let i = 0; i < 5; i++) {
+        yearlyEarnings.push({
+            year: currentYear++,
+            salary: progression.seniorLevel.salary,
+            level: 'Senior Level'
+        });
+    }
+    
+    // Expert Level (Years 11+)
+    for (let i = 0; i < 5; i++) { // Show next 5 years of expert level
+        yearlyEarnings.push({
+            year: currentYear++,
+            salary: progression.expertLevel.salary,
+            level: 'Expert Level'
+        });
+    }
+    
+    return yearlyEarnings;
+}
+
+// Update the Career Progression section in the template
 function displayResults(matches) {
     const resultsContainer = document.getElementById('career-results');
     if (!resultsContainer) {
@@ -2235,6 +2599,7 @@ function displayResults(matches) {
                 : salary;
         };
 
+        // Update the Career Progression & Earnings section
         return `
             <div class="bg-white rounded-lg shadow-lg p-6 mb-4">
                 <div class="flex items-center justify-between mb-4">
@@ -2283,10 +2648,12 @@ function displayResults(matches) {
                     </div>
                 </div>
 
-                <!-- Career Progression -->
+                <!-- Career Progression & Earnings -->
                 <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                    <h4 class="font-bold text-lg mb-3">Career Progression 📈</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <h4 class="font-bold text-lg mb-3">Career Progression & Earnings 📈</h4>
+                    
+                    <!-- Progression Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                         <div class="bg-white p-3 rounded shadow-sm">
                             <h5 class="font-semibold text-indigo-600">Entry Level</h5>
                             <p class="text-sm">${formatSalary(progression.entryLevel.salary)}</p>
@@ -2308,6 +2675,41 @@ function displayResults(matches) {
                             <p class="text-xs text-gray-600">${progression.expertLevel.years}+ years</p>
                         </div>
                     </div>
+
+                    <!-- Cumulative Earnings Summary -->
+                    ${(() => {
+                        if (typeof progression.entryLevel.salary === 'number') {
+                            const earnings = calculateCumulativeEarnings(progression);
+                            return `
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-semibold text-lg mb-3">Potential Cumulative Earnings 💰</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div class="p-3 bg-green-50 rounded">
+                                            <h6 class="font-semibold text-green-700">5 Years</h6>
+                                            <p class="text-sm">${formatSalary(earnings.fiveYear)}</p>
+                                        </div>
+                                        <div class="p-3 bg-green-50 rounded">
+                                            <h6 class="font-semibold text-green-700">10 Years</h6>
+                                            <p class="text-sm">${formatSalary(earnings.tenYear)}</p>
+                                        </div>
+                                        <div class="p-3 bg-green-50 rounded">
+                                            <h6 class="font-semibold text-green-700">20 Years</h6>
+                                            <p class="text-sm">${formatSalary(earnings.twentyYear)}</p>
+                                        </div>
+                                        <div class="p-3 bg-green-50 rounded">
+                                            <h6 class="font-semibold text-green-700">Career Total</h6>
+                                            <p class="text-sm">${formatSalary(earnings.lifetime)}</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2">
+                                        *Estimates based on typical career progression. Actual earnings may vary based on location, 
+                                        performance, market conditions, and other factors.
+                                    </p>
+                                </div>
+                            `;
+                        }
+                        return '';
+                    })()}
                 </div>
 
                 <!-- Additional Info -->
