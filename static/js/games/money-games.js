@@ -459,7 +459,31 @@ document.addEventListener('DOMContentLoaded', () => {
     addResetButton();
 });
 
-// Update the simulation function to update the graph instead of table
+// Add this helper function for smooth animations
+function slideDown(element) {
+    // Get the element's natural height
+    element.style.display = 'block';
+    const height = element.scrollHeight;
+    element.style.height = '0px';
+    element.style.opacity = '0';
+    element.style.overflow = 'hidden';
+    element.style.transition = 'height 0.5s ease-out, opacity 0.3s ease-out';
+    
+    // Trigger reflow
+    element.offsetHeight;
+    
+    // Start animation
+    element.style.height = height + 'px';
+    element.style.opacity = '1';
+    
+    // Clean up after animation
+    setTimeout(() => {
+        element.style.height = '';
+        element.style.overflow = '';
+    }, 500);
+}
+
+// Update simulateAllStrategies to use smooth animations
 async function simulateAllStrategies() {
     if (gameState.isSimulating) return;
     
@@ -528,10 +552,17 @@ async function simulateAllStrategies() {
         // Final chart update with animation
         comparisonChart.update();
 
-        // Update results displays
-        updateSimulationResults(basicTotal, savingsTotal, investmentTotal);
+        // Wait for chart animation to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Create and slide down performance comparison
+        const performanceDiv = showPerformanceComparison(basicTotal, savingsTotal, investmentTotal);
+        performanceDiv.style.display = 'none';
+        slideDown(performanceDiv);
+
+        // Update tip with final comparison
+        await new Promise(resolve => setTimeout(resolve, 300));
         showFinalComparison(basicTotal, savingsTotal, investmentTotal);
-        showPerformanceComparison(basicTotal, savingsTotal, investmentTotal);
 
     } finally {
         gameState.isSimulating = false;
@@ -566,51 +597,131 @@ function showFinalComparison(basicTotal, savingsTotal, investmentTotal) {
     `);
 }
 
-// Add new function to show performance comparison
+// Update showPerformanceComparison to return the element instead of inserting it directly
 function showPerformanceComparison(basicTotal, savingsTotal, investmentTotal) {
     const performanceDiv = document.createElement('div');
-    performanceDiv.className = 'mt-6 bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg';
+    performanceDiv.className = 'mt-6 bg-gradient-to-r from-indigo-50 via-purple-50 to-blue-50 p-6 rounded-lg shadow-sm';
     
+    const savingsVsBasic = savingsTotal - basicTotal;
     const investmentVsBasic = investmentTotal - basicTotal;
     const investmentVsSavings = investmentTotal - savingsTotal;
-    const monthlyInvestmentAdvantage = investmentVsBasic / 60;
-    const yearlyInvestmentAdvantage = monthlyInvestmentAdvantage * 12;
     
     performanceDiv.innerHTML = `
-        <h4 class="font-bold text-lg mb-3">💫 Investment Strategy Performance</h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white p-3 rounded-lg">
-                <h5 class="font-semibold mb-2">Compared to Basic Strategy:</h5>
-                <ul class="space-y-1 text-sm">
-                    <li>• Total advantage: ${formatCurrency(investmentVsBasic)}</li>
-                    <li>• Per year: ${formatCurrency(yearlyInvestmentAdvantage)}</li>
-                    <li>• Per month: ${formatCurrency(monthlyInvestmentAdvantage)}</li>
-                    <li>• Percentage better: ${((investmentTotal/basicTotal - 1) * 100).toFixed(1)}%</li>
-                </ul>
+        <h4 class="text-xl font-bold mb-4 text-indigo-900 flex items-center">
+            <span class="text-2xl mr-2">💫</span> Strategy Comparison Results
+        </h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Basic Strategy -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <h5 class="font-semibold mb-3 text-gray-900 flex items-center">
+                    <span class="text-lg mr-2">💰</span> Basic Strategy
+                </h5>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                        <span class="text-sm text-gray-700">Total Amount:</span>
+                        <span class="font-bold text-gray-900">${formatCurrency(basicTotal)}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span class="text-sm text-gray-700">Monthly Income:</span>
+                        <span class="font-semibold text-gray-900">${formatCurrency(100)}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                        <span class="text-sm text-gray-700">Growth Rate:</span>
+                        <span class="font-semibold text-gray-900">0%</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span class="text-sm text-gray-700">vs Basic:</span>
+                        <span class="font-semibold text-gray-600">Baseline</span>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-3 rounded-lg">
-                <h5 class="font-semibold mb-2">Compared to Savings Strategy:</h5>
-                <ul class="space-y-1 text-sm">
-                    <li>• Total advantage: ${formatCurrency(investmentVsSavings)}</li>
-                    <li>• Per month: ${formatCurrency(investmentVsSavings / 60)}</li>
-                    <li>• Percentage better: ${((investmentTotal/savingsTotal - 1) * 100).toFixed(1)}%</li>
-                </ul>
+            
+            <!-- Savings Strategy -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
+                <h5 class="font-semibold mb-3 text-blue-900 flex items-center">
+                    <span class="text-lg mr-2">🏦</span> Savings Strategy
+                </h5>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
+                        <span class="text-sm text-blue-700">Total Amount:</span>
+                        <span class="font-bold text-blue-900">${formatCurrency(savingsTotal)}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span class="text-sm text-blue-700">Monthly Income:</span>
+                        <span class="font-semibold text-blue-900">${formatCurrency(200)}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
+                        <span class="text-sm text-blue-700">Growth Rate:</span>
+                        <span class="font-semibold text-blue-900">3% Annual</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span class="text-sm text-blue-700">vs Basic:</span>
+                        <span class="font-semibold text-green-600">+${((savingsTotal/basicTotal - 1) * 100).toFixed(1)}%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Investment Strategy -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-purple-100">
+                <h5 class="font-semibold mb-3 text-purple-900 flex items-center">
+                    <span class="text-lg mr-2">📈</span> Investment Strategy
+                </h5>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-2 bg-purple-50 rounded">
+                        <span class="text-sm text-purple-700">Total Amount:</span>
+                        <span class="font-bold text-purple-900">${formatCurrency(investmentTotal)}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span class="text-sm text-purple-700">Monthly Income:</span>
+                        <span class="font-semibold text-purple-900">${formatCurrency(300)}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-purple-50 rounded">
+                        <span class="text-sm text-purple-700">Growth Rate:</span>
+                        <span class="font-semibold text-purple-900">7% Annual</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2">
+                        <span class="text-sm text-purple-700">vs Basic:</span>
+                        <span class="font-semibold text-green-600">+${((investmentTotal/basicTotal - 1) * 100).toFixed(1)}%</span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mt-4 text-sm bg-white p-3 rounded-lg">
-            <p class="font-semibold mb-2">🎯 Key Takeaways:</p>
-            <ul class="space-y-1">
-                <li>• Higher-paying work + investing earned ${formatCurrency(investmentVsBasic)} more than basic work</li>
-                <li>• Investment returns added ${formatCurrency(investmentTotal - (15 * 20 * 60))} through compound growth</li>
-                <li>• Starting early and staying consistent made the biggest impact</li>
-                <li>• The power of compound growth increases over time</li>
-            </ul>
+        
+        <div class="mt-6 bg-white p-4 rounded-lg shadow-sm border border-indigo-100">
+            <h5 class="font-semibold mb-3 text-indigo-900 flex items-center">
+                <span class="text-lg mr-2">🎯</span> Key Insights
+            </h5>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <div class="flex items-start space-x-2 text-sm">
+                        <span class="text-indigo-500 mt-1">•</span>
+                        <span class="text-gray-700">Investment strategy earned <span class="font-semibold text-indigo-600">${formatCurrency(investmentVsBasic)}</span> more than basic</span>
+                    </div>
+                    <div class="flex items-start space-x-2 text-sm">
+                        <span class="text-indigo-500 mt-1">•</span>
+                        <span class="text-gray-700">Savings strategy earned <span class="font-semibold text-indigo-600">${formatCurrency(savingsVsBasic)}</span> more than basic</span>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-start space-x-2 text-sm">
+                        <span class="text-indigo-500 mt-1">•</span>
+                        <span class="text-gray-700">Investment beat savings by <span class="font-semibold text-indigo-600">${formatCurrency(investmentVsSavings)}</span></span>
+                    </div>
+                    <div class="flex items-start space-x-2 text-sm">
+                        <span class="text-indigo-500 mt-1">•</span>
+                        <span class="text-gray-700">Higher income + compound growth = Best results!</span>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
 
     // Find the comparison chart div and insert the performance comparison before it
     const comparisonChart = document.querySelector('#comparison-chart').parentElement;
     comparisonChart.parentElement.insertBefore(performanceDiv, comparisonChart);
+    
+    return performanceDiv;
 }
 
 // Reset function for when switching between modes
@@ -673,24 +784,4 @@ function getDailyChartOptions() {
             }
         }
     };
-}
-
-// Add this function to update the simulation results
-function updateSimulationResults(basicTotal, savingsTotal, investmentTotal) {
-    const resultsDiv = document.getElementById('simulation-results');
-    resultsDiv.classList.remove('hidden');
-    
-    // Update totals
-    document.getElementById('basic-result').textContent = formatCurrency(basicTotal);
-    document.getElementById('savings-result').textContent = formatCurrency(savingsTotal);
-    document.getElementById('investment-result').textContent = formatCurrency(investmentTotal);
-    
-    // Calculate and update differences
-    const savingsDiff = savingsTotal - basicTotal;
-    const investmentDiff = investmentTotal - basicTotal;
-    
-    document.getElementById('savings-difference').textContent = 
-        `+${formatCurrency(savingsDiff)} (${((savingsTotal/basicTotal - 1) * 100).toFixed(1)}% better)`;
-    document.getElementById('investment-difference').textContent = 
-        `+${formatCurrency(investmentDiff)} (${((investmentTotal/basicTotal - 1) * 100).toFixed(1)}% better)`;
 } 
