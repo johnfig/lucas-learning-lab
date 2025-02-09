@@ -86,6 +86,11 @@
                     📊 My Progress
                     <div class="tab-indicator"></div>
                 </button>
+                <button onclick="switchTab('game-of-life-tab')" 
+                        class="tab-button px-6 py-3 text-lg font-semibold transition-colors duration-200 relative">
+                    🎲 Game of Life
+                    <div class="tab-indicator"></div>
+                </button>
             </div>
         </div>
     </nav>
@@ -437,6 +442,63 @@
             <!-- Results Section -->
             <div id="career-results" class="space-y-6">
                 <!-- Career matches will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Game of Life Tab -->
+    <div id="game-of-life-tab" class="tab-content hidden mt-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-center">Conway's Game of Life 🎲</h2>
+                
+                <!-- Stats Display -->
+                <div class="flex justify-center space-x-8 mb-4">
+                    <div class="text-center">
+                        <span class="font-bold">Generation:</span>
+                        <span id="generation">0</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="font-bold">Population:</span>
+                        <span id="population">0</span>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="gol-controls mb-4">
+                    <button id="start-btn" 
+                            onclick="startSimulation()" 
+                            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        Start
+                    </button>
+                    <button id="stop-btn" 
+                            onclick="stopSimulation()" 
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" 
+                            disabled>
+                        Stop
+                    </button>
+                    <button onclick="resetSimulation()" 
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        Reset
+                    </button>
+                </div>
+
+                <!-- Game Grid Container -->
+                <div id="game-of-life" class="max-w-[600px] mx-auto"></div>
+
+                <!-- Results Display -->
+                <div id="results" class="mt-4"></div>
+
+                <!-- Rules -->
+                <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg mb-2">Rules of the Game:</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Any live cell with fewer than two live neighbors dies (underpopulation)</li>
+                        <li>Any live cell with two or three live neighbors lives on to the next generation</li>
+                        <li>Any live cell with more than three live neighbors dies (overpopulation)</li>
+                        <li>Any dead cell with exactly three live neighbors becomes a live cell (reproduction)</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

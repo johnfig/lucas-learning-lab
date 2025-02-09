@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-6 flex items-center justify-center">
+                <span class="mr-2">🔄</span> Conway's Game of Life
+            </h2>
+            
+            <div class="mb-4 flex justify-center space-x-4">
+                <button id="startBtn" 
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Start
+                </button>
+                <button id="restartBtn" 
+                        class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    Restart
+                </button>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">Generation: <span id="generation" class="font-bold">0</span></span>
+                    <span class="text-gray-700">Population: <span id="population" class="font-bold">0</span></span>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <canvas id="gameCanvas" width="600" height="600" 
+                        class="border border-gray-300 rounded-lg shadow-md">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const cellSize = 10;
+const cols = canvas.width / cellSize;
+const rows = canvas.height / cellSize;
+let grid = [];
+let generation = 0;
+let isRunning = false;
+let animationId;
+
+// Initialize grid
+function initGrid() {
+    grid = [];
+    for (let i = 0; i < rows; i++) {
+        grid[i] = [];
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = Math.random() > 0.7 ? 1 : 0;
+        }
+    }
+    generation = 0;
+    updateCounters();
+}
+
+// Draw the grid
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            if (grid[i][j] === 1) {
+                ctx.fillStyle = '#4F46E5'; // Indigo color to match your theme
+                ctx.fillRect(j * cellSize, i * cellSize, cellSize - 1, cellSize - 1);
+            }
+        }
+    }
+}
+
+// Count neighbors
+function countNeighbors(grid, x, y) {
+    let sum = 0;
+    for (let i = -1; i < 2; i++) {
+        for (let j = -1; j < 2; j++) {
+            let row = (x + i + rows) % rows;
+            let col = (y + j + cols) % cols;
+            sum += grid[row][col];
+        }
+    }
+    sum -= grid[x][y];
+    return sum;
+}
+
+// Update grid
+function updateGrid() {
+    let newGrid = grid.map(arr => [...arr]);
+    
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let neighbors = countNeighbors(grid, i, j);
+            
+            if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
+                newGrid[i][j] = 0;
+            } else if (grid[i][j] === 0 && neighbors === 3) {
+                newGrid[i][j] = 1;
+            }
+        }
+    }
+    
+    grid = newGrid;
+    generation++;
+    updateCounters();
+}
+
+function updateCounters() {
+    document.getElementById('generation').textContent = generation;
+    let population = grid.flat().reduce((a, b) => a + b, 0);
+    document.getElementById('population').textContent = population;
+}
+
+function animate() {
+    updateGrid();
+    draw();
+    if (isRunning) {
+        animationId = requestAnimationFrame(animate);
+    }
+}
+
+// Event Listeners
+document.getElementById('startBtn').addEventListener('click', function() {
+    if (!isRunning) {
+        isRunning = true;
+        this.textContent = 'Stop';
+        this.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+        this.classList.add('bg-red-600', 'hover:bg-red-700');
+        animate();
+    } else {
+        isRunning = false;
+        this.textContent = 'Start';
+        this.classList.remove('bg-red-600', 'hover:bg-red-700');
+        this.classList.add('bg-blue-600', 'hover:bg-blue-700');
+        cancelAnimationFrame(animationId);
+    }
+});
+
+document.getElementById('restartBtn').addEventListener('click', function() {
+    isRunning = false;
+    const startBtn = document.getElementById('startBtn');
+    startBtn.textContent = 'Start';
+    startBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+    startBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+    cancelAnimationFrame(animationId);
+    initGrid();
+    draw();
+});
+
+// Initialize the game
+initGrid();
+draw();
+</script>
+{% endblock %} 
