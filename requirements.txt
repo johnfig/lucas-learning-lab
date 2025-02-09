@@ -1,0 +1,14 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==2.2.1
+torchvision==0.17.1
+transformers
+sentencepiece
+fastapi
+uvicorn
+python-multipart
+pyttsx3
+vosk
+sounddevice
+numpy
+accelerate>=0.26.0
+safetensors 
