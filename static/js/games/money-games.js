@@ -607,82 +607,82 @@ function showPerformanceComparison(basicTotal, savingsTotal, investmentTotal) {
     const investmentVsSavings = investmentTotal - savingsTotal;
     
     performanceDiv.innerHTML = `
-        <h4 class="text-xl font-bold mb-4 text-indigo-900 flex items-center">
+        <h4 class="text-xl font-bold mb-4 text-indigo-900 flex items-center justify-center">
             <span class="text-2xl mr-2">💫</span> Strategy Comparison Results
         </h4>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 px-2">
             <!-- Basic Strategy -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 w-full">
                 <h5 class="font-semibold mb-3 text-gray-900 flex items-center">
                     <span class="text-lg mr-2">💰</span> Basic Strategy
                 </h5>
                 <div class="space-y-3">
-                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                        <span class="text-sm text-gray-700">Total Amount:</span>
-                        <span class="font-bold text-gray-900">${formatCurrency(basicTotal)}</span>
+                    <div class="flex flex-col p-2 bg-gray-50 rounded">
+                        <span class="text-xs text-gray-700 mb-1">Total Amount:</span>
+                        <span class="font-bold text-gray-900 text-[11px] whitespace-normal break-all">${formatCurrency(basicTotal)}</span>
                     </div>
-                    <div class="flex justify-between items-center p-2">
-                        <span class="text-sm text-gray-700">Monthly Income:</span>
-                        <span class="font-semibold text-gray-900">${formatCurrency(100)}</span>
+                    <div class="flex flex-col p-2">
+                        <span class="text-xs text-gray-700 mb-1">Monthly Income:</span>
+                        <span class="font-semibold text-gray-900 text-[11px]">${formatCurrency(100)}</span>
                     </div>
-                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                        <span class="text-sm text-gray-700">Growth Rate:</span>
-                        <span class="font-semibold text-gray-900">0%</span>
+                    <div class="flex flex-col p-2 bg-gray-50 rounded">
+                        <span class="text-xs text-gray-700 mb-1">Growth Rate:</span>
+                        <span class="font-semibold text-gray-900 text-[11px]">0%</span>
                     </div>
-                    <div class="flex justify-between items-center p-2">
-                        <span class="text-sm text-gray-700">vs Basic:</span>
-                        <span class="font-semibold text-gray-600">Baseline</span>
+                    <div class="flex flex-col p-2">
+                        <span class="text-xs text-gray-700 mb-1">vs Basic:</span>
+                        <span class="font-semibold text-gray-600 text-[11px]">Baseline</span>
                     </div>
                 </div>
             </div>
             
             <!-- Savings Strategy -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100 w-full">
                 <h5 class="font-semibold mb-3 text-blue-900 flex items-center">
                     <span class="text-lg mr-2">🏦</span> Savings Strategy
                 </h5>
                 <div class="space-y-3">
-                    <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
-                        <span class="text-sm text-blue-700">Total Amount:</span>
-                        <span class="font-bold text-blue-900">${formatCurrency(savingsTotal)}</span>
+                    <div class="flex flex-col p-2 bg-blue-50 rounded">
+                        <span class="text-xs text-blue-700 mb-1">Total Amount:</span>
+                        <span class="font-bold text-blue-900 text-[11px] whitespace-normal break-all">${formatCurrency(savingsTotal)}</span>
                     </div>
-                    <div class="flex justify-between items-center p-2">
-                        <span class="text-sm text-blue-700">Monthly Income:</span>
-                        <span class="font-semibold text-blue-900">${formatCurrency(200)}</span>
+                    <div class="flex flex-col p-2">
+                        <span class="text-xs text-blue-700 mb-1">Monthly Income:</span>
+                        <span class="font-semibold text-blue-900 text-[11px]">${formatCurrency(200)}</span>
                     </div>
-                    <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
-                        <span class="text-sm text-blue-700">Growth Rate:</span>
-                        <span class="font-semibold text-blue-900">3% Annual</span>
+                    <div class="flex flex-col p-2 bg-blue-50 rounded">
+                        <span class="text-xs text-blue-700 mb-1">Growth Rate:</span>
+                        <span class="font-semibold text-blue-900 text-[11px]">3% Annual</span>
                     </div>
-                    <div class="flex justify-between items-center p-2">
-                        <span class="text-sm text-blue-700">vs Basic:</span>
-                        <span class="font-semibold text-green-600">+${((savingsTotal/basicTotal - 1) * 100).toFixed(1)}%</span>
+                    <div class="flex flex-col p-2">
+                        <span class="text-xs text-blue-700 mb-1">vs Basic:</span>
+                        <span class="font-semibold text-green-600 text-[11px]">+${((savingsTotal/basicTotal - 1) * 100).toFixed(1)}%</span>
                     </div>
                 </div>
             </div>
             
             <!-- Investment Strategy -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-purple-100">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-purple-100 w-full">
                 <h5 class="font-semibold mb-3 text-purple-900 flex items-center">
                     <span class="text-lg mr-2">📈</span> Investment Strategy
                 </h5>
                 <div class="space-y-3">
-                    <div class="flex justify-between items-center p-2 bg-purple-50 rounded">
-                        <span class="text-sm text-purple-700">Total Amount:</span>
-                        <span class="font-bold text-purple-900">${formatCurrency(investmentTotal)}</span>
+                    <div class="flex flex-col p-2 bg-purple-50 rounded">
+                        <span class="text-xs text-purple-700 mb-1">Total Amount:</span>
+                        <span class="font-bold text-purple-900 text-[11px] whitespace-normal break-all">${formatCurrency(investmentTotal)}</span>
                     </div>
-                    <div class="flex justify-between items-center p-2">
-                        <span class="text-sm text-purple-700">Monthly Income:</span>
-                        <span class="font-semibold text-purple-900">${formatCurrency(300)}</span>
+                    <div class="flex flex-col p-2">
+                        <span class="text-xs text-purple-700 mb-1">Monthly Income:</span>
+                        <span class="font-semibold text-purple-900 text-[11px]">${formatCurrency(300)}</span>
                     </div>
-                    <div class="flex justify-between items-center p-2 bg-purple-50 rounded">
-                        <span class="text-sm text-purple-700">Growth Rate:</span>
-                        <span class="font-semibold text-purple-900">7% Annual</span>
+                    <div class="flex flex-col p-2 bg-purple-50 rounded">
+                        <span class="text-xs text-purple-700 mb-1">Growth Rate:</span>
+                        <span class="font-semibold text-purple-900 text-[11px]">7% Annual</span>
                     </div>
-                    <div class="flex justify-between items-center p-2">
-                        <span class="text-sm text-purple-700">vs Basic:</span>
-                        <span class="font-semibold text-green-600">+${((investmentTotal/basicTotal - 1) * 100).toFixed(1)}%</span>
+                    <div class="flex flex-col p-2">
+                        <span class="text-xs text-purple-700 mb-1">vs Basic:</span>
+                        <span class="font-semibold text-green-600 text-[11px]">+${((investmentTotal/basicTotal - 1) * 100).toFixed(1)}%</span>
                     </div>
                 </div>
             </div>

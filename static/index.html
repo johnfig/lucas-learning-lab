@@ -517,114 +517,123 @@
 
     <!-- Money Games Tab -->
     <div id="money-games" class="tab-content hidden mt-8">
-        <div class="max-w-4xl mx-auto">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-4 text-center">Money Master 💰</h2>
-                
-                <!-- Game Dashboard -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-green-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-lg mb-2">Your Money 💵</h3>
-                        <p class="text-2xl font-bold text-green-600">$<span id="money-balance">0</span></p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-lg mb-2">Savings 🏦</h3>
-                        <p class="text-2xl font-bold text-blue-600">$<span id="savings-balance">0</span></p>
-                    </div>
-                    <div class="bg-purple-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-lg mb-2">Investments 📈</h3>
-                        <p class="text-2xl font-bold text-purple-600">$<span id="investment-balance">0</span></p>
-                    </div>
-                </div>
-
-                <!-- Actions Section -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <!-- Earn Money Section -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-lg mb-3">Earn Money 💪</h3>
-                        <div class="space-y-3">
-                            <button onclick="earnMoney('chores')" 
-                                    class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                Do Chores ($5)
-                            </button>
-                            <button onclick="earnMoney('homework')" 
-                                    class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                Complete Homework ($10)
-                            </button>
-                            <button onclick="earnMoney('help')" 
-                                    class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                Help Neighbors ($15)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Save & Invest Section -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-lg mb-3">Save & Invest 📊</h3>
-                        <div class="space-y-3">
-                            <button onclick="saveAmount()" 
-                                    class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                Save Money (3% Interest)
-                            </button>
-                            <button onclick="invest()" 
-                                    class="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
-                                Invest (7% Average Return)
-                            </button>
-                            <button onclick="checkProgress()" 
-                                    class="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-                                Check Progress 📊
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Financial Education Section -->
-                <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                    <h3 class="font-bold text-lg mb-3">Money Tips 💡</h3>
-                    <div id="money-tip" class="text-gray-700">
-                        Start earning and saving money to learn about financial growth!
-                    </div>
-                </div>
-
-                <!-- Replace the single chart div with these two sections -->
-                <div id="daily-section" class="bg-white p-4 rounded-lg mb-6">
-                    <h3 class="font-bold text-lg mb-3">Daily Progress 📈</h3>
-                    <canvas id="daily-chart" class="w-full h-64"></canvas>
-                </div>
-
-                <!-- Add this before the comparison chart -->
-                <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg">Compare Investment Strategies 📊</h3>
-                        <button onclick="simulateAllStrategies()" 
-                                id="simulate-comparison" 
-                                data-original-text="Run 5-Year Simulation"
-                                class="bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600 transition-colors">
-                            Run 5-Year Simulation
-                        </button>
-                    </div>
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Daily Money Master Section -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-6 text-center flex items-center justify-center">
+                        <span class="mr-2">💰</span>
+                        Daily Money Master
+                        <span class="ml-2">📊</span>
+                    </h2>
                     
-                    <div class="text-sm text-gray-600">
-                        <p class="mb-2">Watch how different strategies grow over 5 years:</p>
-                        <ul class="list-disc list-inside space-y-1">
-                            <li>Basic Strategy: Only doing chores ($100/month)</li>
-                            <li>Savings Strategy: Homework + Monthly saving ($200/month + 3% annual interest)</li>
-                            <li>Investment Strategy: Helping + Monthly investing ($300/month + 7% annual returns)</li>
-                        </ul>
+                    <!-- Game Dashboard -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <h3 class="font-bold text-base mb-1">Your Money 💵</h3>
+                            <p class="text-xl font-bold text-green-600">$<span id="money-balance">0</span></p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <h3 class="font-bold text-base mb-1">Savings 🏦</h3>
+                            <p class="text-xl font-bold text-blue-600">$<span id="savings-balance">0</span></p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <h3 class="font-bold text-base mb-1">Investments 📈</h3>
+                            <p class="text-xl font-bold text-purple-600">$<span id="investment-balance">0</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Actions Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <!-- Earn Money Section -->
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h3 class="font-bold text-base mb-2">Earn Money 💪</h3>
+                            <div class="space-y-2">
+                                <button onclick="earnMoney('chores')" 
+                                        class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    Do Chores ($5)
+                                </button>
+                                <button onclick="earnMoney('homework')" 
+                                        class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    Complete Homework ($10)
+                                </button>
+                                <button onclick="earnMoney('help')" 
+                                        class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    Help Neighbors ($15)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Save & Invest Section -->
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h3 class="font-bold text-base mb-2">Save & Invest 📊</h3>
+                            <div class="space-y-2">
+                                <button onclick="saveAmount()" 
+                                        class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                    Save Money (3% Interest)
+                                </button>
+                                <button onclick="invest()" 
+                                        class="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                                    Invest (7% Average Return)
+                                </button>
+                                <button onclick="checkProgress()" 
+                                        class="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                                    Check Progress 📊
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Education Section -->
+                    <div class="bg-gray-50 p-3 rounded-lg mb-6">
+                        <h3 class="font-bold text-base mb-2">Money Tips 💡</h3>
+                        <div id="money-tip" class="text-gray-700 text-sm">
+                            Start earning and saving money to learn about financial growth!
+                        </div>
+                    </div>
+
+                    <!-- Daily Progress Chart -->
+                    <div id="daily-section" class="bg-white rounded-lg">
+                        <h3 class="font-bold text-base mb-2">Daily Progress 📈</h3>
+                        <canvas id="daily-chart" class="w-full h-64"></canvas>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <canvas id="comparison-chart" class="w-full h-96"></canvas>
-                </div>
+                <!-- Compounding Section -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-6 text-center flex items-center justify-center">
+                        <span class="mr-2">📈</span>
+                        Compounding
+                        <span class="ml-2">⬆️</span>
+                    </h2>
 
-                <!-- Add a button to switch back to daily view -->
-                <button onclick="switchToDailyView()" 
-                        id="return-to-daily" 
-                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mb-4"
-                        style="display: none;">
-                    Return to Daily View
-                </button>
+                    <!-- Strategy Comparison Section -->
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-base">Compare Strategies 📊</h3>
+                            <button onclick="simulateAllStrategies()" 
+                                    id="simulate-comparison" 
+                                    data-original-text="Run 5-Year Simulation"
+                                    class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors text-sm">
+                                Run 5-Year Simulation
+                            </button>
+                        </div>
+                        
+                        <div class="text-xs text-gray-600">
+                            <p class="mb-2">Watch how different strategies grow over 5 years:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Basic: Chores ($100/month)</li>
+                                <li>Savings: Homework + Saving ($200/month + 3% interest)</li>
+                                <li>Investment: Helping + Investing ($300/month + 7% return)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Chart -->
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <canvas id="comparison-chart" class="w-full h-96"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
