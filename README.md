@@ -1,1 +1,1 @@
-# offline-llm-for-kids
+# offline-llm-for-kids 🚀
