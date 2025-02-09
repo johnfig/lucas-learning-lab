@@ -1,4 +1,4 @@
-from flask import jsonify, request, send_file
+from flask import jsonify, request, send_file, after_this_request
 from database import db
 from models import LearningStats
 from datetime import datetime, timedelta
@@ -6,6 +6,8 @@ from gtts import gTTS
 import io
 import logging
 import random
+import os
+import tempfile
 
 logger = logging.getLogger(__name__)
 
@@ -206,4 +208,27 @@ def register_routes(app):
             return jsonify({
                 'success': False,
                 'error': str(e)
-            }), 500 
+            }), 500
+
+    @app.route('/get_word_audio/<word>')
+    def get_word_audio(word):
+        try:
+            # Create gTTS object
+            tts = gTTS(text=word, lang='en', slow=False)
+            
+            # Create a temporary file to store the audio
+            temp_file = tempfile.NamedTemporaryFile(suffix='.mp3', delete=False)
+            
+            # Save the audio to the temporary file
+            tts.save(temp_file.name)
+            
+            # Send the file and then clean up
+            @after_this_request
+            def remove_file(response):
+                os.unlink(temp_file.name)
+                return response
+            
+            return send_file(temp_file.name, mimetype='audio/mpeg')
+        except Exception as e:
+            app.logger.error(f"Error generating audio: {str(e)}")
+            return jsonify({"error": "Failed to generate audio"}), 500 

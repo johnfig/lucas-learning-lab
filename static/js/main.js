@@ -1427,6 +1427,23 @@ function newSpellingWord() {
 function speakWord() {
     if (currentSpellingWord) {
         const utterance = new SpeechSynthesisUtterance(currentSpellingWord.word);
+        // Configure voice settings to match fun facts
+        utterance.rate = 0.9;  // Slightly slower for clarity
+        utterance.pitch = 1.1; // Slightly higher pitch for engagement
+        utterance.volume = 1.0;
+        
+        // Try to use a friendly, clear voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(voice => 
+            voice.name.includes('Samantha') ||  // iOS/macOS
+            voice.name.includes('Google US English Female') || // Chrome
+            voice.name.includes('Microsoft Zira') // Windows
+        );
+        
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+        
         window.speechSynthesis.speak(utterance);
     }
 }
@@ -2914,3 +2931,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ... existing code ...
     initializeLifePathTab();
 }); 
+
+function playWord(word) {
+    // Update to use the new gTTS endpoint
+    const audioUrl = `/get_word_audio/${word}`;
+    const audio = new Audio(audioUrl);
+    audio.play().catch(error => {
+        console.error('Error playing audio:', error);
+    });
+}

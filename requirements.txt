@@ -11,4 +11,4 @@ accelerate>=0.26.0
 safetensors
 flask==3.0.2
 flask-sqlalchemy==3.1.1
-gTTS==2.5.1 
+gTTS==2.3.1 

@@ -20,43 +20,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function speakWord() {
         if (!currentWord) return;
-
-        // Try using the Web Speech API
-        if ('speechSynthesis' in window) {
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance(currentWord.word);
-            
-            // Set properties for better clarity
-            utterance.rate = 0.9; // Slightly slower
-            utterance.pitch = 1;
-            utterance.volume = 1;
-            
-            // Use a child-friendly voice if available
-            let voices = speechSynthesis.getVoices();
-            let preferredVoice = voices.find(voice => 
-                voice.name.includes('Child') || 
-                voice.name.includes('Female') || 
-                voice.name.includes('Google')
-            );
-            if (preferredVoice) {
-                utterance.voice = preferredVoice;
-            }
-
-            // Speak the word
-            window.speechSynthesis.speak(utterance);
-        } else {
-            // Fallback if Web Speech API is not available
-            alert('Speech synthesis is not supported in your browser. The word is: ' + currentWord.word);
-        }
-    }
-
-    // Initialize voices when they become available
-    if ('speechSynthesis' in window) {
-        speechSynthesis.onvoiceschanged = function() {
-            window.speechSynthesis.getVoices();
-        };
+        
+        // Use the gTTS endpoint
+        const audioUrl = `/get_word_audio/${currentWord.word}`;
+        const audio = new Audio(audioUrl);
+        audio.play().catch(error => {
+            console.error('Error playing audio:', error);
+            // Fallback message if audio fails
+            alert('Could not play audio. The word is: ' + currentWord.word);
+        });
     }
 
     function checkSpelling() {
