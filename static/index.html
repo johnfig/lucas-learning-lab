@@ -590,6 +590,27 @@
                 <div class="bg-white p-4 rounded-lg">
                     <canvas id="money-chart" class="w-full h-64"></canvas>
                 </div>
+
+                <!-- Replace the three simulation buttons with this -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h3 class="font-bold text-lg mb-3">Compare Strategies! 📊</h3>
+                    <div class="text-center">
+                        <button id="simulate-comparison" 
+                                onclick="simulateAllStrategies()" 
+                                data-original-text="Compare All Strategies"
+                                class="bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600 transition-colors">
+                            Compare All Strategies
+                        </button>
+                        <div class="mt-4 text-sm text-gray-600">
+                            Watch how different strategies grow over 5 years!
+                            <ul class="mt-2 text-left list-disc list-inside">
+                                <li>Basic: Only doing chores ($100/month)</li>
+                                <li>Savings: Homework + Monthly saving ($200/month + 3% annual interest)</li>
+                                <li>Investment: Helping + Monthly investing ($300/month + 7% annual returns)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

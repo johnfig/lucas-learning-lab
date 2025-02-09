@@ -17,51 +17,70 @@ let gameState = {
         "Investing usually gives higher returns than savings, but with more risk! 📈",
         "It's good to have both savings and investments! 🎯",
         "Regular small savings can grow into big amounts over time! 💰"
-    ]
+    ],
+    isSimulating: false,
+    simulationSpeed: 100, // faster speed for longer simulation
+    simulationMonths: 60, // 5 years
+    monthlyData: {
+        basic: [],
+        savings: [],
+        investment: []
+    },
+    scenarios: {
+        basic: {
+            money: 0,
+            savings: 0,
+            investments: 0,
+            total: 0,
+            data: []
+        },
+        savings: {
+            money: 0,
+            savings: 0,
+            investments: 0,
+            total: 0,
+            data: []
+        },
+        investment: {
+            money: 0,
+            savings: 0,
+            investments: 0,
+            total: 0,
+            data: []
+        }
+    }
 };
 
 // Initialize Chart.js
 let moneyChart;
 
 function initializeMoneyGame() {
-    // Initialize the chart with multiple datasets
     const ctx = document.getElementById('money-chart').getContext('2d');
     moneyChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [],
+            labels: Array.from({length: 61}, (_, i) => `Month ${i}`), // 0-60 months
             datasets: [
                 {
-                    label: 'Total Worth',
+                    label: 'Basic Strategy',
                     data: [],
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                    tension: 0.1,
-                    fill: true
+                    borderColor: 'rgb(156, 163, 175)',
+                    backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                    tension: 0.1
                 },
                 {
-                    label: 'Cash',
-                    data: [],
-                    borderColor: 'rgb(34, 197, 94)',
-                    borderDash: [5, 5],
-                    tension: 0.1,
-                    fill: false
-                },
-                {
-                    label: 'Savings',
+                    label: 'Savings Strategy',
                     data: [],
                     borderColor: 'rgb(59, 130, 246)',
-                    borderDash: [5, 5],
-                    tension: 0.1,
-                    fill: false
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.1
                 },
                 {
-                    label: 'Investments',
+                    label: 'Investment Strategy',
                     data: [],
                     borderColor: 'rgb(168, 85, 247)',
-                    borderDash: [5, 5],
-                    tension: 0.1,
-                    fill: false
+                    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                    tension: 0.1
                 }
             ]
         },
@@ -72,18 +91,29 @@ function initializeMoneyGame() {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Amount ($)'
+                        text: 'Total Worth ($)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: 'Days'
+                        text: 'Time (Months)'
                     },
                     ticks: {
                         callback: function(value) {
-                            return 'Day ' + value;
-                        }
+                            const years = Math.floor(value / 12);
+                            const months = value % 12;
+                            if (months === 0) {
+                                return `Year ${years}`;
+                            }
+                            return ``;
+                        },
+                        autoSkip: false
                     }
                 }
             },
@@ -91,15 +121,31 @@ function initializeMoneyGame() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return context.dataset.label + ': $' + context.raw.toFixed(2);
+                            const value = context.raw.toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            });
+                            return `${context.dataset.label}: ${value}`;
+                        },
+                        title: function(context) {
+                            const monthNum = parseInt(context[0].label.split(' ')[1]);
+                            const years = Math.floor(monthNum / 12);
+                            const months = monthNum % 12;
+                            return `Year ${years}, Month ${months}`;
                         }
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20
                     }
                 }
             }
         }
     });
 
-    updateDisplay();
     showRandomTip();
 }
 
@@ -286,6 +332,90 @@ function checkProgress() {
     showTip(message);
 }
 
+async function startSimulation(scenario = 'basic') {
+    if (gameState.isSimulating) return;
+    
+    // Reset game state
+    gameState.money = 0;
+    gameState.savings = 0;
+    gameState.investments = 0;
+    gameState.daysPassed = 0;
+    gameState.chartData = {
+        cash: [],
+        savings: [],
+        investments: [],
+        total: []
+    };
+    gameState.history = [];
+    gameState.isSimulating = true;
+    gameState.simulationScenario = scenario;
+
+    const simulationBtn = document.getElementById(`simulate-${scenario}`);
+    if (simulationBtn) {
+        simulationBtn.disabled = true;
+        simulationBtn.innerHTML = `<span class="animate-pulse">Simulating...</span>`;
+    }
+
+    showTip("Starting simulation... Watch how money grows! 🚀");
+    
+    try {
+        switch(scenario) {
+            case 'basic':
+                await simulateBasicStrategy();
+                break;
+            case 'savings':
+                await simulateSavingsStrategy();
+                break;
+            case 'investment':
+                await simulateInvestmentStrategy();
+                break;
+        }
+    } finally {
+        gameState.isSimulating = false;
+        if (simulationBtn) {
+            simulationBtn.disabled = false;
+            simulationBtn.textContent = simulationBtn.getAttribute('data-original-text');
+        }
+    }
+}
+
+async function simulateBasicStrategy() {
+    // Simulate doing only basic chores
+    for (let i = 0; i < 30 && gameState.isSimulating; i++) {
+        earnMoney('chores');
+        await new Promise(resolve => setTimeout(resolve, gameState.simulationSpeed));
+    }
+    showTip("Basic strategy complete! Notice how the money grows slowly with just chores. 📊");
+}
+
+async function simulateSavingsStrategy() {
+    // Simulate doing homework (better paying) and saving
+    for (let i = 0; i < 30 && gameState.isSimulating; i++) {
+        earnMoney('homework');
+        if (gameState.money >= 50) {
+            saveAmount();
+        }
+        await new Promise(resolve => setTimeout(resolve, gameState.simulationSpeed));
+    }
+    showTip("Savings strategy complete! See how interest helps your money grow! 💰");
+}
+
+async function simulateInvestmentStrategy() {
+    // Simulate doing highest paying tasks and investing
+    for (let i = 0; i < 30 && gameState.isSimulating; i++) {
+        earnMoney('help');
+        if (gameState.money >= 100) {
+            invest();
+        }
+        await new Promise(resolve => setTimeout(resolve, gameState.simulationSpeed));
+    }
+    showTip("Investment strategy complete! Notice the power of higher returns! 📈");
+}
+
+function stopSimulation() {
+    gameState.isSimulating = false;
+}
+
 // Initialize game when tab is shown
 document.addEventListener('DOMContentLoaded', () => {
     const observer = new MutationObserver((mutations) => {
@@ -304,4 +434,117 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeMoneyGame();
         }
     }
-}); 
+});
+
+// New function to simulate all strategies simultaneously
+async function simulateAllStrategies() {
+    if (gameState.isSimulating) return;
+    
+    // Reset scenarios
+    gameState.monthlyData = {
+        basic: [0],
+        savings: [0],
+        investment: [0]
+    };
+
+    gameState.isSimulating = true;
+
+    // Disable simulation button
+    const simulationBtn = document.getElementById('simulate-comparison');
+    simulationBtn.disabled = true;
+    simulationBtn.innerHTML = `<span class="animate-pulse">Simulating 5 Years...</span>`;
+
+    showTip("Starting 5-year comparison simulation... Watch how different strategies grow! 🚀");
+
+    try {
+        let basic = { money: 0 };
+        let savings = { money: 0, savings: 0 };
+        let investment = { money: 0, investments: 0 };
+
+        // Simulate 60 months (5 years)
+        for (let month = 1; month <= gameState.simulationMonths; month++) {
+            // Monthly income (assuming 20 working days per month)
+            basic.money += 5 * 20; // $5/day from chores
+            savings.money += 10 * 20; // $10/day from homework
+            investment.money += 15 * 20; // $15/day from helping
+
+            // Apply savings strategy
+            if (savings.money >= 50) {
+                const saveAmount = Math.min(savings.money, 200); // Save up to $200/month
+                savings.money -= saveAmount;
+                savings.savings += saveAmount;
+            }
+            // Monthly compound interest on savings (3% annual)
+            savings.savings *= (1 + (0.03 / 12));
+
+            // Apply investment strategy
+            if (investment.money >= 100) {
+                const investAmount = Math.min(investment.money, 300); // Invest up to $300/month
+                investment.money -= investAmount;
+                investment.investments += investAmount;
+            }
+            // Monthly compound returns on investments (7% annual)
+            investment.investments *= (1 + (0.07 / 12));
+
+            // Calculate monthly totals
+            const basicTotal = basic.money;
+            const savingsTotal = savings.money + savings.savings;
+            const investmentTotal = investment.money + investment.investments;
+
+            // Store monthly data
+            gameState.monthlyData.basic.push(basicTotal);
+            gameState.monthlyData.savings.push(savingsTotal);
+            gameState.monthlyData.investment.push(investmentTotal);
+
+            // Update chart
+            updateComparisonChart();
+            
+            // Update progress message every year
+            if (month % 12 === 0) {
+                const year = month / 12;
+                showTip(`Simulating Year ${year} of 5... 📊`);
+            }
+
+            await new Promise(resolve => setTimeout(resolve, gameState.simulationSpeed));
+        }
+
+        // Show final comparison
+        const basicTotal = gameState.monthlyData.basic[gameState.simulationMonths];
+        const savingsTotal = gameState.monthlyData.savings[gameState.simulationMonths];
+        const investmentTotal = gameState.monthlyData.investment[gameState.simulationMonths];
+
+        showTip(`
+            <div class="font-bold">5-Year Comparison Results:</div>
+            <div class="mt-2">
+                <div>Basic Strategy: ${formatCurrency(basicTotal)}</div>
+                <div>Savings Strategy: ${formatCurrency(savingsTotal)} 
+                    (${((savingsTotal/basicTotal - 1) * 100).toFixed(1)}% better than basic)</div>
+                <div>Investment Strategy: ${formatCurrency(investmentTotal)}
+                    (${((investmentTotal/basicTotal - 1) * 100).toFixed(1)}% better than basic)</div>
+            </div>
+            <div class="mt-2 text-sm text-gray-600">
+                💡 Over 5 years, the power of compound growth becomes very clear!
+                The investment strategy earned ${formatCurrency(investmentTotal - basicTotal)} more than the basic strategy.
+            </div>
+        `);
+
+    } finally {
+        gameState.isSimulating = false;
+        simulationBtn.disabled = false;
+        simulationBtn.textContent = simulationBtn.getAttribute('data-original-text');
+    }
+}
+
+function formatCurrency(amount) {
+    return amount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
+}
+
+function updateComparisonChart() {
+    moneyChart.data.datasets[0].data = gameState.monthlyData.basic;
+    moneyChart.data.datasets[1].data = gameState.monthlyData.savings;
+    moneyChart.data.datasets[2].data = gameState.monthlyData.investment;
+    moneyChart.update();
+} 
