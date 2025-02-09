@@ -629,9 +629,21 @@ document.addEventListener('keydown', (e) => {
 
 // Remove all existing DOMContentLoaded event listeners and replace with this one
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Page loaded, initializing application...');
+    console.log('Initializing application...');
     
-    // Show initial message in tutor tab
+    // Initialize the UI first
+    initializeUI();
+    
+    // Then restore the last active tab
+    const lastActiveTab = localStorage.getItem('currentTab') || 'fun-facts';
+    const tabToActivate = document.querySelector(`[onclick="switchTab('${lastActiveTab}')"]`);
+    if (tabToActivate) {
+        tabToActivate.click();
+    }
+});
+
+function initializeUI() {
+    // Initialize tutor response area
     const responseElement = document.getElementById('response');
     if (responseElement) {
         responseElement.innerHTML = `
@@ -642,29 +654,69 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Initialize games
+    // Initialize games if we're on the games tab
+    const gamesTab = document.getElementById('games');
+    if (gamesTab && !gamesTab.classList.contains('hidden')) {
+        initializeGames();
+    }
+
+    // Initialize dashboard if visible
+    const dashboardTab = document.getElementById('dashboard');
+    if (dashboardTab && !dashboardTab.classList.contains('hidden')) {
+        learningStats.loadFromServer();
+    }
+}
+
+function initializeGames() {
+    // Initialize each game if its elements exist
+    if (document.getElementById('scrambled-word')) {
+        newWord();
+    }
+    if (document.getElementById('math-problem')) {
+        newMathProblem();
+    }
+    if (document.getElementById('memory-game')) {
+        startMemoryGame();
+    }
     if (document.getElementById('spelling-hint')) {
         newSpellingWord();
     }
     if (document.getElementById('animal-image')) {
         nextAnimal();
     }
+    if (document.getElementById('tic-tac-toe')) {
+        resetGame();
+    }
+}
 
-    // Initialize dashboard if it exists
-    const dashboardTab = document.getElementById('dashboard');
-    if (dashboardTab && !dashboardTab.classList.contains('hidden')) {
+// Update the tab switching function
+function switchTab(tabId) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+
+    // Update tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+        content.classList.add('hidden');
+    });
+    
+    const selectedTab = document.getElementById(tabId);
+    selectedTab.classList.remove('hidden');
+    selectedTab.classList.add('active');
+
+    // Initialize content based on tab
+    if (tabId === 'games') {
+        initializeGames();
+    } else if (tabId === 'dashboard') {
         learningStats.loadFromServer();
     }
 
-    // Restore the last active tab
-    const lastActiveTab = localStorage.getItem('currentTab') || 'fun-facts';
-    const tabToActivate = document.querySelector(`[onclick="switchTab('${lastActiveTab}')"]`);
-    if (tabToActivate) {
-        tabToActivate.click();
-    }
-
-    console.log('Application initialized successfully');
-});
+    // Save the current tab
+    localStorage.setItem('currentTab', tabId);
+}
 
 // Update the API URL to use port 3000
 // const API_BASE = 'http://localhost:3000';
@@ -1108,9 +1160,11 @@ function switchTab(tabId) {
     selectedTab.classList.remove('hidden');
     selectedTab.classList.add('active');
 
-    // Initialize games only after the tab is visible
+    // Initialize content based on tab
     if (tabId === 'games') {
-        setTimeout(initializeAllGames, 0); // Use setTimeout to ensure DOM is ready
+        initializeGames();
+    } else if (tabId === 'dashboard') {
+        learningStats.loadFromServer();
     }
 
     // Save the current tab
@@ -1405,60 +1459,6 @@ function checkAnimal(answer) {
     }
     document.getElementById('animal-fact').textContent = currentAnimal.fact;
     setTimeout(nextAnimal, 2000);
-}
-
-// Initialize games on page load
-document.addEventListener('DOMContentLoaded', () => {
-    // First restore the last active tab
-    const lastActiveTab = localStorage.getItem('currentTab') || 'fun-facts';
-    const tabToActivate = document.querySelector(`[onclick="switchTab('${lastActiveTab}')"]`);
-    if (tabToActivate) {
-        tabToActivate.click();
-    }
-
-    // Only initialize games if we're on the games tab
-    if (lastActiveTab === 'games') {
-        initializeAllGames();
-    }
-});
-
-// Function to initialize all games
-function initializeAllGames() {
-    try {
-        // Initialize Word Scramble
-        if (document.getElementById('scrambled-word')) {
-            newWord();
-        }
-
-        // Initialize Math Quiz
-        if (document.getElementById('math-problem')) {
-            newMathProblem();
-        }
-
-        // Initialize Memory Match
-        const memoryGame = document.getElementById('memory-game');
-        if (memoryGame) {
-            startMemoryGame();
-        }
-
-        // Initialize Spelling Bee
-        if (document.getElementById('spelling-hint')) {
-            newSpellingWord();
-        }
-
-        // Initialize Animal Quiz
-        if (document.getElementById('animal-image')) {
-            nextAnimal();
-        }
-
-        // Initialize Tic Tac Toe
-        const ticTacToeBoard = document.getElementById('tic-tac-toe');
-        if (ticTacToeBoard) {
-            resetGame();
-        }
-    } catch (error) {
-        console.error('Error initializing games:', error);
-    }
 }
 
 // Learning Dashboard Management
@@ -1767,12 +1767,168 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Career paths database
 const careerPaths = {
+    teacher: {
+        title: "Teacher",
+        requirements: {
+            workHours: 40,
+            incomeGoal: 50000,
+            familyTime: "high",
+            location: "anywhere",
+            stress: "medium"
+        },
+        path: {
+            highSchool: {
+                grades: "80%+ average",
+                activities: "Tutoring, Volunteer teaching",
+                requirements: "Strong communication skills"
+            },
+            university: {
+                degree: "Education or Subject-specific degree",
+                gpa: "3.0+ GPA",
+                requirements: "Teaching certification"
+            },
+            career: {
+                entryLevel: {
+                    role: "Teacher",
+                    hours: "40-45 hours/week",
+                    salary: "$45,000-$55,000"
+                },
+                fiveYears: {
+                    role: "Senior Teacher",
+                    hours: "40-45 hours/week",
+                    salary: "$55,000-$70,000"
+                },
+                tenYears: {
+                    role: "Department Head",
+                    hours: "40-45 hours/week",
+                    salary: "$70,000-$90,000"
+                }
+            }
+        }
+    },
+    nurse: {
+        title: "Registered Nurse",
+        requirements: {
+            workHours: 40,
+            incomeGoal: 75000,
+            familyTime: "medium",
+            location: "anywhere",
+            stress: "high"
+        },
+        path: {
+            highSchool: {
+                grades: "85%+ average",
+                activities: "Hospital volunteering, First Aid certification",
+                requirements: "Strong Biology and Chemistry grades"
+            },
+            university: {
+                degree: "Bachelor of Science in Nursing",
+                gpa: "3.2+ GPA",
+                requirements: "NCLEX-RN certification"
+            },
+            career: {
+                entryLevel: {
+                    role: "Registered Nurse",
+                    hours: "36-40 hours/week",
+                    salary: "$65,000-$80,000"
+                },
+                fiveYears: {
+                    role: "Specialized Nurse",
+                    hours: "36-40 hours/week",
+                    salary: "$80,000-$100,000"
+                },
+                tenYears: {
+                    role: "Nurse Practitioner",
+                    hours: "40-45 hours/week",
+                    salary: "$100,000-$130,000"
+                }
+            }
+        }
+    },
+    accountant: {
+        title: "Accountant",
+        requirements: {
+            workHours: 45,
+            incomeGoal: 100000,
+            familyTime: "medium",
+            location: "anywhere",
+            stress: "medium"
+        },
+        path: {
+            highSchool: {
+                grades: "85%+ average",
+                activities: "Math club, Business clubs",
+                requirements: "Strong Math grades"
+            },
+            university: {
+                degree: "Accounting or Finance",
+                gpa: "3.3+ GPA",
+                requirements: "CPA certification"
+            },
+            career: {
+                entryLevel: {
+                    role: "Junior Accountant",
+                    hours: "40-45 hours/week",
+                    salary: "$55,000-$70,000"
+                },
+                fiveYears: {
+                    role: "Senior Accountant",
+                    hours: "40-50 hours/week",
+                    salary: "$80,000-$110,000"
+                },
+                tenYears: {
+                    role: "Accounting Manager",
+                    hours: "45-50 hours/week",
+                    salary: "$110,000-$150,000"
+                }
+            }
+        }
+    },
+    lawyer: {
+        title: "Lawyer",
+        requirements: {
+            workHours: 60,
+            incomeGoal: 200000,
+            familyTime: "low",
+            location: "major-city",
+            stress: "high"
+        },
+        path: {
+            highSchool: {
+                grades: "90%+ average",
+                activities: "Debate team, Mock trial",
+                requirements: "Strong English and History grades"
+            },
+            university: {
+                degree: "Pre-Law, then Law School",
+                gpa: "3.7+ GPA",
+                requirements: "Pass Bar Exam"
+            },
+            career: {
+                entryLevel: {
+                    role: "Associate Attorney",
+                    hours: "60-70 hours/week",
+                    salary: "$125,000-$190,000"
+                },
+                fiveYears: {
+                    role: "Senior Associate",
+                    hours: "55-65 hours/week",
+                    salary: "$180,000-$250,000"
+                },
+                tenYears: {
+                    role: "Partner",
+                    hours: "50-60 hours/week",
+                    salary: "$250,000-$1,000,000+"
+                }
+            }
+        }
+    },
     investmentBanker: {
         title: "Investment Banker",
         requirements: {
             workHours: 80,
             incomeGoal: 500000,
-            familyTime: "high",
+            familyTime: "low",
             location: "major-city",
             stress: "high"
         },
@@ -1791,100 +1947,177 @@ const careerPaths = {
                 entryLevel: {
                     role: "Analyst",
                     hours: "80-100 hours/week",
-                    salary: "$85,000-$125,000"
+                    salary: "$150,000-$200,000"
                 },
                 fiveYears: {
                     role: "Associate",
                     hours: "70-80 hours/week",
-                    salary: "$150,000-$250,000"
+                    salary: "$300,000-$500,000"
                 },
                 tenYears: {
                     role: "Vice President",
                     hours: "60-70 hours/week",
-                    salary: "$300,000-$500,000+"
+                    salary: "$500,000-$2M+"
                 }
             }
         }
     },
-    doctor: {
-        title: "Medical Doctor",
+    hedgeFundManager: {
+        title: "Hedge Fund Manager",
+        requirements: {
+            workHours: 70,
+            incomeGoal: 1000000,
+            familyTime: "low",
+            location: "major-city",
+            stress: "high"
+        },
+        path: {
+            highSchool: {
+                grades: "95%+ average",
+                activities: "Math competitions, Trading club",
+                requirements: "Advanced Math and Computer Science"
+            },
+            university: {
+                degree: "Mathematics, Physics, or Quantitative Finance",
+                gpa: "3.8+ GPA",
+                internships: "Quant trading internships"
+            },
+            career: {
+                entryLevel: {
+                    role: "Quantitative Analyst",
+                    hours: "60-70 hours/week",
+                    salary: "$200,000-$300,000"
+                },
+                fiveYears: {
+                    role: "Portfolio Manager",
+                    hours: "60-70 hours/week",
+                    salary: "$500,000-$2M"
+                },
+                tenYears: {
+                    role: "Fund Manager",
+                    hours: "50-60 hours/week",
+                    salary: "$2M-$10M+"
+                }
+            }
+        }
+    },
+    surgeonSpecialist: {
+        title: "Specialized Surgeon",
         requirements: {
             workHours: 60,
-            incomeGoal: 200000,
+            incomeGoal: 500000,
             familyTime: "medium",
-            location: "anywhere",
+            location: "major-city",
+            stress: "high"
+        },
+        path: {
+            highSchool: {
+                grades: "95%+ average",
+                activities: "Hospital volunteering, Research projects",
+                requirements: "Advanced Biology and Chemistry"
+            },
+            university: {
+                degree: "Pre-Med + Medical School + Specialization",
+                gpa: "3.8+ GPA",
+                requirements: "MCAT 515+, Residency, Fellowship"
+            },
+            career: {
+                entryLevel: {
+                    role: "Resident",
+                    hours: "80+ hours/week",
+                    salary: "$60,000-$70,000"
+                },
+                fiveYears: {
+                    role: "Specialized Surgeon",
+                    hours: "60-70 hours/week",
+                    salary: "$400,000-$600,000"
+                },
+                tenYears: {
+                    role: "Chief Surgeon",
+                    hours: "50-60 hours/week",
+                    salary: "$600,000-$1.5M+"
+                }
+            }
+        }
+    },
+    techExecutive: {
+        title: "Tech Executive",
+        requirements: {
+            workHours: 60,
+            incomeGoal: 500000,
+            familyTime: "medium",
+            location: "major-city",
             stress: "high"
         },
         path: {
             highSchool: {
                 grades: "90%+ average",
-                activities: "Hospital volunteering, Science clubs",
-                requirements: "Advanced Biology, Chemistry, and Physics"
+                activities: "Coding projects, Hackathons",
+                requirements: "Computer Science, Math"
             },
             university: {
-                degree: "Pre-Med, then Medical School",
-                gpa: "3.7+ GPA",
-                requirements: "MCAT score 510+"
+                degree: "Computer Science or Software Engineering",
+                gpa: "3.5+ GPA",
+                internships: "FAANG company internships"
             },
             career: {
                 entryLevel: {
-                    role: "Resident",
-                    hours: "80 hours/week",
-                    salary: "$55,000-$65,000"
+                    role: "Software Engineer",
+                    hours: "40-50 hours/week",
+                    salary: "$150,000-$200,000"
                 },
                 fiveYears: {
-                    role: "Attending Physician",
+                    role: "Engineering Manager",
                     hours: "50-60 hours/week",
-                    salary: "$200,000-$300,000"
+                    salary: "$300,000-$500,000"
                 },
                 tenYears: {
-                    role: "Senior Physician/Specialist",
-                    hours: "40-50 hours/week",
-                    salary: "$300,000-$500,000"
+                    role: "CTO/VP Engineering",
+                    hours: "50-60 hours/week",
+                    salary: "$500,000-$2M+"
                 }
             }
         }
     },
-    softwareEngineer: {
-        title: "Software Engineer",
+    privateEquityPartner: {
+        title: "Private Equity Partner",
         requirements: {
-            workHours: 40,
-            incomeGoal: 100000,
+            workHours: 70,
+            incomeGoal: 1000000,
             familyTime: "low",
-            location: "remote",
-            stress: "medium"
+            location: "major-city",
+            stress: "high"
         },
         path: {
             highSchool: {
-                grades: "85%+ average",
-                activities: "Coding clubs, Personal projects",
-                requirements: "Computer Science, Math courses"
+                grades: "95%+ average",
+                activities: "Business competitions, Leadership roles",
+                requirements: "Advanced Math and Economics"
             },
             university: {
-                degree: "Computer Science or related field",
-                gpa: "3.3+ GPA",
-                internships: "Tech company internships"
+                degree: "Business, Economics, or Finance",
+                gpa: "3.8+ GPA",
+                internships: "Investment Banking internships"
             },
             career: {
                 entryLevel: {
-                    role: "Junior Developer",
-                    hours: "40-45 hours/week",
-                    salary: "$70,000-$100,000"
+                    role: "Investment Banking Analyst",
+                    hours: "80-100 hours/week",
+                    salary: "$150,000-$200,000"
                 },
                 fiveYears: {
-                    role: "Senior Developer",
-                    hours: "40-50 hours/week",
-                    salary: "$120,000-$180,000"
+                    role: "Private Equity Associate",
+                    hours: "70-80 hours/week",
+                    salary: "$300,000-$600,000"
                 },
                 tenYears: {
-                    role: "Tech Lead/Architect",
-                    hours: "40-50 hours/week",
-                    salary: "$180,000-$250,000"
+                    role: "Partner",
+                    hours: "60-70 hours/week",
+                    salary: "$1M-$10M+"
                 }
             }
         }
     }
-    // Add more career paths as needed
 };
 
 function analyzePath() {
@@ -1901,9 +2134,34 @@ function analyzePath() {
 function findMatchingCareers(workHours, incomeGoal, familyTime, location, stress) {
     return Object.values(careerPaths).filter(career => {
         const req = career.requirements;
-        return workHours >= req.workHours &&
-               incomeGoal <= req.incomeGoal &&
-               (familyTime === req.familyTime || location === req.location || stress === req.stress);
+        
+        // More nuanced matching
+        const hoursMatch = workHours >= req.workHours - 10; // More flexibility in hours
+        const incomeMatch = incomeGoal <= req.incomeGoal * 1.5; // More flexibility in income
+        const lifestyleMatch = 
+            familyTime === req.familyTime || 
+            location === req.location || 
+            stress === req.stress;
+        
+        // Weight different factors
+        const hoursFit = 1 - Math.abs(workHours - req.workHours) / 100;
+        const incomeFit = 1 - Math.abs(incomeGoal - req.incomeGoal) / incomeGoal;
+        const lifestyleFit = (
+            (familyTime === req.familyTime ? 1 : 0) +
+            (location === req.location ? 1 : 0) +
+            (stress === req.stress ? 1 : 0)
+        ) / 3;
+        
+        // Calculate overall match score
+        const matchScore = (hoursFit + incomeFit + lifestyleFit) / 3;
+        
+        // Store match score for sorting
+        career.matchScore = matchScore;
+        
+        return hoursMatch && incomeMatch && lifestyleMatch;
+    }).sort((a, b) => {
+        // Sort by match score
+        return b.matchScore - a.matchScore;
     });
 }
 

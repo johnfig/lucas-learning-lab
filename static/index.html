@@ -305,15 +305,84 @@
 
     <!-- Life Path Tab -->
     <div id="life-path" class="tab-content hidden mt-8">
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto space-y-8">
                 <!-- Life Path Questionnaire -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-2xl font-bold mb-6 flex items-center">
                         <span class="mr-2">🌱</span> Life Path Explorer
                     </h2>
+                    
                     <div class="space-y-6">
-                        <!-- Add your life path form fields here -->
+                        <!-- Work Hours -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Maximum hours you want to work per week?
+                            </label>
+                            <select id="work-hours" class="w-full p-2 border rounded-lg">
+                                <option value="35">35 hours (Part-time)</option>
+                                <option value="40" selected>40 hours (Standard)</option>
+                                <option value="50">50 hours (Overtime)</option>
+                                <option value="60">60 hours (Demanding)</option>
+                                <option value="80">80+ hours (Intense)</option>
+                            </select>
+                        </div>
+
+                        <!-- Income Goal -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Target yearly income? ($)
+                            </label>
+                            <select id="income-goal" class="w-full p-2 border rounded-lg">
+                                <option value="50000">$50,000 - $75,000</option>
+                                <option value="100000">$75,000 - $150,000</option>
+                                <option value="200000">$150,000 - $250,000</option>
+                                <option value="500000">$250,000 - $500,000</option>
+                                <option value="1000000">$500,000 - $1M+</option>
+                            </select>
+                        </div>
+
+                        <!-- Family Time -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                How much family time do you want?
+                            </label>
+                            <select id="family-time" class="w-full p-2 border rounded-lg">
+                                <option value="high">High - Lots of family time</option>
+                                <option value="medium">Medium - Balanced</option>
+                                <option value="low">Low - Career focused</option>
+                            </select>
+                        </div>
+
+                        <!-- Location -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Where do you want to work?
+                            </label>
+                            <select id="location" class="w-full p-2 border rounded-lg">
+                                <option value="anywhere">Anywhere</option>
+                                <option value="major-city">Major City</option>
+                                <option value="remote">Remote Work</option>
+                            </select>
+                        </div>
+
+                        <!-- Stress Level -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Acceptable stress level?
+                            </label>
+                            <select id="stress" class="w-full p-2 border rounded-lg">
+                                <option value="low">Low - Relaxed pace</option>
+                                <option value="medium">Medium - Some pressure</option>
+                                <option value="high">High - Fast-paced</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button onclick="analyzePath()" 
+                                class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Show My Life Paths 🔮
+                        </button>
                     </div>
                 </div>
 
