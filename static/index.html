@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="permissions-policy" content="microphone=*, camera=()">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="permissions-policy" content="microphone=*, camera=()">
     <title>AI Tutor for Kids</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/static/js/main.js"></script>
+    <!-- Load game scripts -->
+    <script src="/static/js/games/word-scramble.js"></script>
+    <script src="/static/js/games/math-challenge.js"></script>
+    <script src="/static/js/games/memory-match.js"></script>
+    <script src="/static/js/games/spelling-bee.js"></script>
+    <script src="/static/js/games/animal-quiz.js"></script>
+    <script src="/static/js/games/tic-tac-toe.js"></script>
+    <!-- Load games.js last -->
+    <script src="/static/js/games.js"></script>
 </head>
 <body class="bg-gray-100">
     <header class="relative bg-gradient-to-r from-indigo-900 via-blue-800 to-purple-900 text-white py-12 px-4 overflow-hidden">
@@ -209,8 +219,9 @@
                 <!-- Memory Match Game -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold mb-4 text-center">Memory Match! 🎴</h3>
-                    <div id="memory-game" class="grid grid-cols-4 gap-2 mb-4">
-                        <!-- Cards will be added by JavaScript -->
+                    <div class="text-center mb-2">Score: <span id="memory-score">0</span></div>
+                    <div id="memory-game" class="grid grid-cols-4 gap-2 mb-4 aspect-square">
+                        <!-- Memory cards will be added here -->
                     </div>
                     <button onclick="startMemoryGame()" 
                             class="w-full bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
@@ -246,7 +257,7 @@
                     <h3 class="text-xl font-bold mb-4 text-center">Animal Quiz! 🦁</h3>
                     <p id="animal-score" class="text-center text-lg font-bold mb-4">Score: 0</p>
                     <div class="text-center mb-4">
-                        <img id="animal-image" class="w-full h-48 object-cover rounded mb-4" src="" alt="Animal">
+                        <div id="animal-image" class="w-full h-48 mb-4"></div>
                         <div id="animal-options" class="grid grid-cols-2 gap-2">
                             <!-- Options will be added by JavaScript -->
                         </div>
@@ -261,10 +272,10 @@
                 <!-- Tic Tac Toe -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold mb-4 text-center">Tic-Tac-Toe! 🎯</h3>
-                    <div id="tic-tac-toe" class="grid grid-cols-3 gap-2 mb-4"></div>
-                    <div id="game-status" class="text-center mb-2 font-bold">Your turn! (X)</div>
-                    <button onclick="resetGame()" 
-                            class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    <div id="ttt-status" class="ttt-status">Your turn! (X)</div>
+                    <div id="ttt-board"></div>
+                    <button onclick="resetTTTGame()" 
+                            class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4">
                         Start New Game
                     </button>
                 </div>
