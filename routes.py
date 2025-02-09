@@ -5,8 +5,69 @@ from datetime import datetime, timedelta
 from gtts import gTTS
 import io
 import logging
+import random
 
 logger = logging.getLogger(__name__)
+
+# Add topic-specific fun facts
+TOPIC_FACTS = {
+    'planets': [
+        "Venus spins backwards compared to most other planets!",
+        "One year on Jupiter is equal to 12 Earth years!",
+        "Saturn's rings are mostly made of ice and rock!",
+        "Mars has the largest volcano in our solar system - Olympus Mons!",
+        "Neptune has the strongest winds in the solar system, reaching 1,200 mph!"
+    ],
+    'dinosaurs': [
+        "T-Rex had teeth as long as bananas!",
+        "Some dinosaurs were as small as chickens!",
+        "Stegosaurus had a brain the size of a walnut!",
+        "Scientists think many dinosaurs had feathers!",
+        "The longest dinosaur was the Argentinosaurus, about 115 feet long!"
+    ],
+    'human body': [
+        "Your body has enough iron to make a 3-inch nail!",
+        "Your heart beats about 115,000 times each day!",
+        "Humans are the only animals that blush!",
+        "Your bones are stronger than steel, pound for pound!",
+        "You grow about 8 meters of hair every day across your entire body!"
+    ],
+    'animals': [
+        "Sloths can hold their breath for 40 minutes underwater!",
+        "Butterflies taste with their feet!",
+        "Hippos secrete their own sunscreen - a pink liquid!",
+        "A group of flamingos is called a 'flamboyance'!",
+        "Octopuses have three hearts and blue blood!"
+    ],
+    'weather': [
+        "Lightning strikes Earth about 100 times every second!",
+        "A hurricane can dump 2.4 trillion gallons of rain a day!",
+        "The fastest wind ever recorded was 253 miles per hour!",
+        "Raindrops can fall at up to 20 miles per hour!",
+        "Thunder can be heard from about 12 miles away!"
+    ],
+    'ocean life': [
+        "The blue whale's tongue weighs as much as an elephant!",
+        "Some jellyfish are immortal!",
+        "Octopuses have nine brains!",
+        "Seahorses are the only fish species where males give birth!",
+        "The loudest animal in the ocean is the sperm whale!"
+    ],
+    'plants': [
+        "Bamboo can grow up to 35 inches in a single day!",
+        "Some trees communicate with each other through their roots!",
+        "The oldest living tree is over 5,000 years old!",
+        "Plants can recognize their siblings!",
+        "Some plants can count!"
+    ],
+    'space exploration': [
+        "The first animal in space was a dog named Laika!",
+        "One day on Venus is longer than its year!",
+        "Astronauts grow taller in space!",
+        "The footprints on the Moon will last for 100 million years!",
+        "The space suit astronauts wear weighs about 280 pounds on Earth!"
+    ]
+}
 
 def register_routes(app):
     @app.route('/')
@@ -114,4 +175,35 @@ def register_routes(app):
             mp3_fp.seek(0)
             return send_file(mp3_fp, mimetype='audio/mpeg', as_attachment=True, download_name='speech.mp3')
         except Exception as e:
-            return jsonify({'error': str(e)}), 500 
+            return jsonify({'error': str(e)}), 500
+
+    @app.route('/api/ask', methods=['POST'])
+    def ask_question():
+        try:
+            data = request.json
+            topic = data.get('text', '').lower()
+            
+            # Extract topic name from the question
+            for key in TOPIC_FACTS.keys():
+                if key in topic:
+                    facts = TOPIC_FACTS[key]
+                    response = random.choice(facts)
+                    return jsonify({
+                        'success': True,
+                        'response': response,
+                        'topic': key
+                    })
+            
+            # Fallback for unknown topics
+            return jsonify({
+                'success': True,
+                'response': "I don't have any facts about that topic yet. Try another one!",
+                'topic': 'general'
+            })
+            
+        except Exception as e:
+            logger.error(f"Error in ask_question: {str(e)}", exc_info=True)
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500 

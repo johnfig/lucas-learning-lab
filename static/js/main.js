@@ -337,7 +337,7 @@ async function askPresetQuestion(question) {
     const responseDiv = document.getElementById('fun-facts-response');
     
     try {
-        // Show starting animation
+        // Show loading animation
         responseDiv.innerHTML = `
             <div class="flex items-center space-x-2 mb-4">
                 <span class="text-2xl animate-bounce">🚀</span>
@@ -349,20 +349,20 @@ async function askPresetQuestion(question) {
         `;
 
         // Get the AI response
-        const response = await fetch('/api/ask', {  // Changed back to /api/ask
+        const response = await fetch('/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ text: question }),  // Changed back to original format
+            body: JSON.stringify({ text: question })
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         // Track topic exploration
         learningStats.topicsExplored++;
         learningStats.saveToServer();
@@ -370,8 +370,8 @@ async function askPresetQuestion(question) {
             type: 'topic',
             description: `Learned about ${question.replace('Tell me about ', '')}`
         });
-        
-        // Show the response with speech bubble and audio indicator
+
+        // Show the response with speech bubble
         responseDiv.innerHTML = `
             <div class="flex items-center space-x-2 mb-4">
                 <span class="text-2xl">🎯</span>
@@ -387,32 +387,41 @@ async function askPresetQuestion(question) {
         `;
 
         // Speak the response
-        const speakResponse = await fetch('/api/speak', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ text: data.response }),
-        });
+        try {
+            const speakResponse = await fetch('/api/speak', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: data.response })
+            });
 
-        if (!speakResponse.ok) {
-            throw new Error(`HTTP error! status: ${speakResponse.status}`);
+            if (!speakResponse.ok) {
+                throw new Error(`HTTP error! status: ${speakResponse.status}`);
+            }
+
+            const blob = await speakResponse.blob();
+            const audio = new Audio(URL.createObjectURL(blob));
+            await audio.play();
+
+            // Update display after speaking
+            responseDiv.innerHTML = `
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="text-2xl">✨</span>
+                    <h3 class="text-xl font-bold">Learning adventure complete!</h3>
+                </div>
+                <div class="prose prose-lg max-w-none">
+                    ${data.response}
+                </div>
+                <div class="mt-4 bg-blue-50 p-4 rounded-lg">
+                    <div class="font-bold">Want to learn more?</div>
+                    <p class="text-sm text-gray-600">Try clicking another topic or ask me a specific question!</p>
+                </div>
+            `;
+        } catch (speakError) {
+            console.error('Speech error:', speakError);
+            // Continue showing the text even if speech fails
         }
-
-        // Update final display after speaking
-        responseDiv.innerHTML = `
-            <div class="flex items-center space-x-2 mb-4">
-                <span class="text-2xl">✨</span>
-                <h3 class="text-xl font-bold">Learning adventure complete!</h3>
-            </div>
-            <div class="prose prose-lg max-w-none">
-                ${data.response}
-            </div>
-            <div class="mt-4 bg-blue-50 p-4 rounded-lg">
-                <div class="font-bold">Want to learn more?</div>
-                <p class="text-sm text-gray-600">Try clicking another topic or ask me a specific question!</p>
-            </div>
-        `;
 
     } catch (error) {
         console.error('Error:', error);
