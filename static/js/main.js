@@ -2780,3 +2780,122 @@ document.addEventListener('DOMContentLoaded', async () => {
         tabToActivate.click();
     }
 }); 
+
+// Add event listeners to all form inputs to trigger real-time updates
+function initializeCareerPathForm() {
+    const formInputs = [
+        'interests',
+        'subjects',
+        'stress',
+        'work-hours',
+        'income-goal',
+        'location'
+    ];
+
+    formInputs.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('change', () => {
+                // Only analyze if we have at least one interest and subject selected
+                const interests = Array.from(document.getElementById('interests').selectedOptions).map(opt => opt.value);
+                const subjects = Array.from(document.getElementById('subjects').selectedOptions).map(opt => opt.value);
+                
+                if (interests.length > 0 && subjects.length > 0) {
+                    analyzePath(true); // true indicates this is a real-time update
+                } else if (inputId === 'interests' || inputId === 'subjects') {
+                    // Show gentle reminder if interests or subjects are empty
+                    const resultsContainer = document.getElementById('career-results');
+                    if (resultsContainer) {
+                        resultsContainer.innerHTML = `
+                            <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                <p class="text-blue-600">
+                                    Please select at least one interest and one subject to see matching careers! ✨
+                                </p>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+    });
+}
+
+// Update analyzePath to support real-time updates
+function analyzePath(isRealTimeUpdate = false) {
+    try {
+        const interests = Array.from(document.getElementById('interests').selectedOptions).map(opt => opt.value);
+        const subjects = Array.from(document.getElementById('subjects').selectedOptions).map(opt => opt.value);
+        const stress = document.getElementById('stress').value;
+        const workHours = parseInt(document.getElementById('work-hours').value);
+        const incomeGoal = parseInt(document.getElementById('income-goal').value);
+        const location = document.getElementById('location').value;
+
+        if (interests.length === 0 || subjects.length === 0) {
+            if (!isRealTimeUpdate) {
+                alert('Please select at least one interest and one subject!');
+            }
+            return;
+        }
+
+        const matches = careerPaths.getCareersByPreferences(interests, subjects, stress);
+        
+        // Filter matches by work hours and income
+        const filteredMatches = matches.filter(career => {
+            if (!career.progression) return false;
+
+            const expertSalary = career.progression.expertLevel.salary;
+            const salaryMatch = 
+                incomeGoal >= 5000000 ? expertSalary >= 5000000 :
+                incomeGoal >= 1000000 ? expertSalary >= 1000000 :
+                incomeGoal >= 500000 ? expertSalary >= 500000 :
+                incomeGoal >= 250000 ? expertSalary >= 250000 :
+                true;
+            
+            const hoursMatch = workHours <= 40 ? 
+                career.stressLevels.includes('Low') || career.stressLevels.includes('Medium') :
+                workHours <= 60 ? 
+                    career.stressLevels.includes('Medium') || career.stressLevels.includes('High') :
+                    career.stressLevels.includes('High');
+            
+            return salaryMatch && hoursMatch;
+        });
+
+        displayResults(filteredMatches);
+        
+        // Only scroll to results on initial submission, not during real-time updates
+        if (!isRealTimeUpdate) {
+            document.getElementById('career-results').scrollIntoView({ behavior: 'smooth' });
+        }
+    } catch (error) {
+        console.error('Error analyzing career path:', error);
+        if (!isRealTimeUpdate) {
+            alert('Something went wrong. Please try again!');
+        }
+    }
+}
+
+// Initialize the form when the life path tab is shown
+function initializeLifePathTab() {
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.target.id === 'life-path' && !mutation.target.classList.contains('hidden')) {
+                initializeCareerPathForm();
+            }
+        });
+    });
+
+    const lifePathTab = document.getElementById('life-path');
+    if (lifePathTab) {
+        observer.observe(lifePathTab, { attributes: true, attributeFilter: ['class'] });
+        // Initialize immediately if the tab is already visible
+        if (!lifePathTab.classList.contains('hidden')) {
+            initializeCareerPathForm();
+        }
+    }
+}
+
+// Add to your existing DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing code ...
+    initializeLifePathTab();
+}); 
