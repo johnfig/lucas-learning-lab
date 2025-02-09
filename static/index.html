@@ -346,95 +346,97 @@
     </div>
 
     <!-- Life Path Tab -->
-    <div id="life-path" class="tab-content hidden mt-8">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto space-y-8">
-                <!-- Life Path Questionnaire -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <span class="mr-2">🌱</span> Life Path Explorer
-                    </h2>
-                    
-                    <div class="space-y-6">
-                        <!-- Work Hours -->
+    <div id="life-path" class="tab-content container mx-auto px-4 py-8 hidden">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">🌱 Discover Your Career Path</h2>
+                
+                <!-- Career Quiz Form -->
+                <form onsubmit="event.preventDefault(); analyzePath();" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Interests -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Maximum hours you want to work per week?
-                            </label>
-                            <select id="work-hours" class="w-full p-2 border rounded-lg">
-                                <option value="35">35 hours (Part-time)</option>
-                                <option value="40" selected>40 hours (Standard)</option>
-                                <option value="50">50 hours (Overtime)</option>
-                                <option value="60">60 hours (Demanding)</option>
-                                <option value="80">80+ hours (Intense)</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Interests</label>
+                            <select id="interests" multiple class="w-full p-2 border rounded">
+                                <option value="Technical">Technical</option>
+                                <option value="Creative">Creative</option>
+                                <option value="Social">Social</option>
+                                <option value="Nature">Nature</option>
                             </select>
                         </div>
 
-                        <!-- Income Goal -->
+                        <!-- Favorite Subjects -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Target yearly income? ($)
-                            </label>
-                            <select id="income-goal" class="w-full p-2 border rounded-lg">
-                                <option value="50000">$50,000 - $75,000</option>
-                                <option value="100000">$75,000 - $150,000</option>
-                                <option value="200000">$150,000 - $250,000</option>
-                                <option value="500000">$250,000 - $500,000</option>
-                                <option value="1000000">$500,000 - $1M+</option>
-                            </select>
-                        </div>
-
-                        <!-- Family Time -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                How much family time do you want?
-                            </label>
-                            <select id="family-time" class="w-full p-2 border rounded-lg">
-                                <option value="high">High - Lots of family time</option>
-                                <option value="medium">Medium - Balanced</option>
-                                <option value="low">Low - Career focused</option>
-                            </select>
-                        </div>
-
-                        <!-- Location -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Where do you want to work?
-                            </label>
-                            <select id="location" class="w-full p-2 border rounded-lg">
-                                <option value="anywhere">Anywhere</option>
-                                <option value="major-city">Major City</option>
-                                <option value="remote">Remote Work</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Favorite Subjects</label>
+                            <select id="subjects" multiple class="w-full p-2 border rounded">
+                                <option value="Math">Math</option>
+                                <option value="Science">Science</option>
+                                <option value="Art">Art</option>
+                                <option value="Language">Language</option>
+                                <option value="History">History</option>
                             </select>
                         </div>
 
                         <!-- Stress Level -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Acceptable stress level?
-                            </label>
-                            <select id="stress" class="w-full p-2 border rounded-lg">
-                                <option value="low">Low - Relaxed pace</option>
-                                <option value="medium">Medium - Some pressure</option>
-                                <option value="high">High - Fast-paced</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Stress Level</label>
+                            <select id="stress" class="w-full p-2 border rounded">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
                             </select>
                         </div>
 
-                        <!-- Submit Button -->
-                        <button onclick="analyzePath()" 
-                                class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
-                            Show My Life Paths 🔮
+                        <!-- Work Hours -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Work Hours</label>
+                            <select id="work-hours" class="w-full p-2 border rounded">
+                                <option value="20">20 hours (Part-time)</option>
+                                <option value="30">30 hours (Part-time+)</option>
+                                <option value="40" selected>40 hours (Full-time)</option>
+                                <option value="50">50 hours (Overtime)</option>
+                                <option value="60">60 hours (High Intensity)</option>
+                                <option value="70">70 hours (Very Demanding)</option>
+                                <option value="80">80+ hours (Extreme)</option>
+                            </select>
+                        </div>
+
+                        <!-- Income Goal -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Income Goal</label>
+                            <select id="income-goal" class="w-full p-2 border rounded">
+                                <option value="100000">Up to $100,000/year</option>
+                                <option value="250000">Average ($250,000/year)</option>
+                                <option value="500000">High ($500,000/year)</option>
+                                <option value="1000000">Very High ($1M/year)</option>
+                                <option value="5000000">Exceptional ($5M+/year)</option>
+                            </select>
+                        </div>
+
+                        <!-- Location -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Work Environment</label>
+                            <select id="location" class="w-full p-2 border rounded">
+                                <option value="office">Office</option>
+                                <option value="remote">Remote</option>
+                                <option value="mixed">Mixed</option>
+                                <option value="outdoor">Outdoor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" 
+                                class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Find My Career Path 🔍
                         </button>
                     </div>
-                </div>
+                </form>
+            </div>
 
-                <!-- Results Section -->
-                <div id="life-path-results" class="bg-white rounded-lg shadow-lg p-6 hidden">
-                    <h3 class="text-xl font-bold mb-4">Recommended Career Paths</h3>
-                    <div id="career-paths" class="space-y-6">
-                        <!-- Career paths will be added here by JavaScript -->
-                    </div>
-                </div>
+            <!-- Results Section -->
+            <div id="career-results" class="space-y-6">
+                <!-- Career matches will be displayed here -->
             </div>
         </div>
     </div>
