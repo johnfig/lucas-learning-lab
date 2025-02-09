@@ -25,6 +25,27 @@
             <div class="stars"></div>
         </div>
         
+        <!-- Progress tracker - positioned in header -->
+        <div class="absolute left-4 top-1/2 -translate-y-1/2 bg-indigo-900/30 backdrop-blur-sm rounded-lg p-2 text-xs border border-white/10">
+            <div class="flex flex-col gap-1.5">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sm">🎯</span>
+                    <span class="text-white/80">Topics:</span>
+                    <span id="topics-count" class="font-semibold text-white">0</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sm">🎮</span>
+                    <span class="text-white/80">Games:</span>
+                    <span id="games-count" class="font-semibold text-white">0</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sm">🔥</span>
+                    <span class="text-white/80">Streak:</span>
+                    <span id="streak-count" class="font-semibold text-white">0 days</span>
+                </div>
+            </div>
+        </div>
+        
         <!-- Header content -->
         <div class="container mx-auto relative z-10">
             <h1 class="text-5xl font-bold text-center mb-3 flex items-center justify-center">
@@ -135,39 +156,49 @@
     </div>
 
     <!-- Dashboard Tab -->
-    <div id="dashboard" class="tab-content hidden mt-8">
+    <div id="dashboard" class="tab-content container mx-auto px-4 py-8 hidden">
         <div class="max-w-4xl mx-auto space-y-8">
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-green-50 p-4 rounded-lg">
-                    <div class="text-green-600 font-bold">Topics Explored</div>
-                    <div class="text-3xl font-bold" id="topics-count">0</div>
+                <!-- Topics Explored -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2 text-center text-green-600">Topics Explored</h3>
+                    <p class="text-4xl font-bold text-center" id="topics-explored">0</p>
                 </div>
-                <div class="bg-blue-50 p-4 rounded-lg">
-                    <div class="text-blue-600 font-bold">Games Played</div>
-                    <div class="text-3xl font-bold" id="games-count">0</div>
+
+                <!-- Games Played -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2 text-center text-blue-600">Games Played</h3>
+                    <p class="text-4xl font-bold text-center" id="games-played">0</p>
                 </div>
-                <div class="bg-purple-50 p-4 rounded-lg">
-                    <div class="text-purple-600 font-bold">Learning Streak</div>
-                    <div class="text-3xl font-bold" id="streak-count">0 days 🔥</div>
+
+                <!-- Learning Streak -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2 text-center text-purple-600">Learning Streak</h3>
+                    <p class="text-4xl font-bold text-center">
+                        <span id="learning-streak">0</span>
+                        <span class="text-2xl">🔥</span>
+                    </p>
                 </div>
             </div>
 
             <!-- Achievements Section -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
                 <h2 class="text-2xl font-bold mb-4 flex items-center">
                     <span class="mr-2">🏆</span> Your Achievements
                 </h2>
                 <div id="achievements-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Badges will be added here by JavaScript -->
+                    <!-- Achievements will be added here by JavaScript -->
                 </div>
             </div>
 
             <!-- Recent Activity -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-4">Recent Activity</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <span class="mr-2">📝</span> Recent Activity
+                </h2>
                 <div id="recent-activity" class="space-y-4">
-                    <!-- Activities will be added here -->
+                    <!-- Activities will be added here by JavaScript -->
                 </div>
             </div>
         </div>

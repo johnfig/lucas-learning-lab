@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ game: 'tic-tac-toe', score: score })
         });
+        handleGameCompletion();
     }
 
     function resetGame() {

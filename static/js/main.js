@@ -1474,8 +1474,7 @@ function checkAnimal(answer) {
 const learningStats = {
     topicsExplored: 0,
     gamesPlayed: 0,
-    streak: 0,
-    lastVisit: null,
+    streakDays: 0,
     activities: [],
     
     // Add achievements configuration
@@ -1517,7 +1516,7 @@ const learningStats = {
             title: 'Streak Starter',
             description: 'Started your learning streak',
             icon: '🔥',
-            condition: (stats) => stats.streak >= 1,
+            condition: (stats) => stats.streakDays >= 1,
             backgroundColor: 'bg-orange-100'
         },
         {
@@ -1525,7 +1524,7 @@ const learningStats = {
             title: 'Consistent Learner',
             description: '3-day learning streak',
             icon: '⚡',
-            condition: (stats) => stats.streak >= 3,
+            condition: (stats) => stats.streakDays >= 3,
             backgroundColor: 'bg-red-100'
         },
         {
@@ -1561,9 +1560,9 @@ const learningStats = {
             const stats = await response.json();
             this.topicsExplored = stats.topics_explored;
             this.gamesPlayed = stats.games_played;
-            this.streak = stats.streak_days;
+            this.streakDays = stats.streak_days;
             this.activities = stats.activities || [];
-            this.updateDashboard();
+            this.updateDisplay();
         } catch (error) {
             console.error('Error loading stats:', error);
         }
@@ -1638,48 +1637,30 @@ const learningStats = {
     updateFromStats(stats) {
         this.topicsExplored = stats.topics_explored;
         this.gamesPlayed = stats.games_played;
-        this.streak = stats.streak_days;
+        this.streakDays = stats.streak_days;
         this.activities = stats.activities || [];
-        this.updateDashboard();
+        this.updateDisplay();
     },
     
-    updateDashboard() {
-        const topicsCount = document.getElementById('topics-count');
-        const gamesCount = document.getElementById('games-count');
-        const streakCount = document.getElementById('streak-count');
-        const activityContainer = document.getElementById('recent-activity');
+    updateDisplay() {
+        // Update the corner progress tracker
+        document.getElementById('topics-count').textContent = this.topicsExplored;
+        document.getElementById('games-count').textContent = this.gamesPlayed;
+        document.getElementById('streak-count').textContent = `${this.streakDays} day${this.streakDays !== 1 ? 's' : ''}`;
 
-        if (topicsCount) topicsCount.textContent = this.topicsExplored;
-        if (gamesCount) gamesCount.textContent = this.gamesPlayed;
-        if (streakCount) {
-            let streakText = '';
-            if (this.streak === 0) {
-                streakText = 'Start your streak! ✨';
-            } else if (this.streak === 1) {
-                streakText = '1 day 🔥';
-            } else {
-                streakText = `${this.streak} days 🔥`;
-            }
-            
-            streakCount.textContent = streakText;
-            
-            // Add animation when streak updates
-            streakCount.classList.add('streak-update');
-            setTimeout(() => streakCount.classList.remove('streak-update'), 1000);
+        // Update the progress tab displays
+        const topicsExploredElement = document.getElementById('topics-explored');
+        const gamesPlayedElement = document.getElementById('games-played');
+        const streakElement = document.getElementById('learning-streak');
+
+        if (topicsExploredElement) {
+            topicsExploredElement.textContent = this.topicsExplored;
         }
-
-        if (activityContainer && this.activities.length > 0) {
-            activityContainer.innerHTML = this.activities.map(activity => `
-                <div class="flex items-center space-x-4">
-                    <div class="bg-blue-100 p-2 rounded-full">
-                        ${activity.type === 'topic' ? '📚' : '🎮'}
-                    </div>
-                    <div class="flex-1">
-                        <div class="font-bold">${activity.description}</div>
-                        <div class="text-sm text-gray-600">${this.formatTimeAgo(new Date(activity.timestamp))}</div>
-                    </div>
-                </div>
-            `).join('');
+        if (gamesPlayedElement) {
+            gamesPlayedElement.textContent = this.gamesPlayed;
+        }
+        if (streakElement) {
+            streakElement.textContent = `${this.streakDays} days`;
         }
 
         // Update achievements
@@ -1709,6 +1690,28 @@ const learningStats = {
                     </div>
                 `;
             }).join('');
+        }
+
+        // Update recent activity
+        const activityContainer = document.getElementById('recent-activity');
+        if (activityContainer && this.activities.length > 0) {
+            activityContainer.innerHTML = this.activities.map(activity => `
+                <div class="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+                    <div class="bg-blue-100 p-2 rounded-full">
+                        ${activity.type === 'topic' ? '📚' : '🎮'}
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold">${activity.description}</div>
+                        <div class="text-sm text-gray-600">${this.formatTimeAgo(new Date(activity.timestamp))}</div>
+                    </div>
+                </div>
+            `).join('');
+        } else if (activityContainer) {
+            activityContainer.innerHTML = `
+                <div class="text-center text-gray-500 py-4">
+                    No activities yet. Start exploring and playing games!
+                </div>
+            `;
         }
     },
     

@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ game: 'memory-match', score: score })
         });
+        handleGameCompletion();
     }
 
     // Add memory-specific styles

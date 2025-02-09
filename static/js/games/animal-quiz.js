@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 completed: true
             })
         });
+        handleGameCompletion();
     }
 
     // Make functions globally available
