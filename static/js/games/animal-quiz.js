@@ -32,15 +32,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentAnimal = null;
     let score = 0;
+    let correctAnswers = 0;
+    let usedAnimals = new Set();
 
     function startAnimalQuiz() {
         score = 0;
+        correctAnswers = 0;
+        usedAnimals.clear();
         document.getElementById('animal-score').textContent = `Score: ${score}`;
         nextAnimal();
     }
 
+    function getRandomUnusedAnimal() {
+        const availableAnimals = animals.filter(animal => !usedAnimals.has(animal.name));
+        if (availableAnimals.length === 0) {
+            usedAnimals.clear(); // Reset if all animals have been used
+            return animals[Math.floor(Math.random() * animals.length)];
+        }
+        return availableAnimals[Math.floor(Math.random() * availableAnimals.length)];
+    }
+
     function nextAnimal() {
-        currentAnimal = animals[Math.floor(Math.random() * animals.length)];
+        currentAnimal = getRandomUnusedAnimal();
+        usedAnimals.add(currentAnimal.name);
+
         const optionsContainer = document.getElementById('animal-options');
         if (!optionsContainer) return;
 
@@ -50,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update the image with a large emoji
         const imageContainer = document.getElementById('animal-image');
-        imageContainer.style.fontSize = '8rem'; // Make emoji larger
+        imageContainer.style.fontSize = '8rem';
         imageContainer.style.display = 'flex';
         imageContainer.style.justifyContent = 'center';
         imageContainer.style.alignItems = 'center';
@@ -74,9 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (selectedIndex === currentAnimal.correct) {
             score += 10;
+            correctAnswers++;
             document.getElementById('animal-score').textContent = `Score: ${score}`;
             buttons[selectedIndex].classList.add('bg-green-500', 'text-white');
-            saveScore(score);
+            
+            if (correctAnswers >= 3) {
+                // Game won!
+                setTimeout(() => {
+                    alert(`Congratulations! You won with a score of ${score}! 🎉`);
+                    saveAnimalQuizScore(score);
+                    startAnimalQuiz(); // Reset the game
+                }, 1000);
+                return;
+            }
         } else {
             buttons[selectedIndex].classList.add('bg-red-500', 'text-white');
             buttons[currentAnimal.correct].classList.add('bg-green-500', 'text-white');
@@ -86,11 +111,15 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(nextAnimal, 2000);
     }
 
-    function saveScore(score) {
+    function saveAnimalQuizScore(score) {
         fetch('/games/api/save-score', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ game: 'animal-quiz', score: score })
+            body: JSON.stringify({ 
+                game: 'animal-quiz', 
+                score: score,
+                completed: true
+            })
         });
     }
 
@@ -99,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.nextAnimal = nextAnimal;
     window.checkAnswer = checkAnswer;
 
-    // Initialize the quiz if we're on the games tab
+    // Initialize if we're on the games tab
     if (document.getElementById('animal-options')) {
         startAnimalQuiz();
     }

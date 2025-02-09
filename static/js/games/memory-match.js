@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function createMemoryCard(emoji, index) {
         const card = document.createElement('div');
-        card.className = 'memory-card bg-green-500 rounded-lg cursor-pointer flex items-center justify-center text-2xl transition-all transform hover:scale-105 aspect-square';
+        card.className = 'memory-card bg-gray-200 rounded-lg cursor-pointer flex items-center justify-center text-2xl transition-all transform hover:scale-105 hover:bg-gray-300 aspect-square';
         card.dataset.index = index;
         card.dataset.emoji = emoji;
         
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         inner.className = 'memory-card-inner w-full h-full relative';
         
         const front = document.createElement('div');
-        front.className = 'memory-card-front absolute w-full h-full flex items-center justify-center bg-green-500 rounded-lg';
+        front.className = 'memory-card-front absolute w-full h-full flex items-center justify-center bg-gray-200 rounded-lg';
         front.textContent = '?';
         
         const back = document.createElement('div');
@@ -130,8 +130,12 @@ document.addEventListener('DOMContentLoaded', function() {
             transform: rotateY(180deg);
         }
         .memory-card.matched {
-            background-color: #86efac !important;
+            background-color: #e5e7eb !important;
             cursor: default;
+            opacity: 0.8;
+        }
+        .memory-card:hover:not(.matched):not(.flipped) {
+            background-color: #d1d5db;
         }
     `;
     document.head.appendChild(style);
