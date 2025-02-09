@@ -17,6 +17,8 @@
     <script src="/static/js/games/tic-tac-toe.js"></script>
     <!-- Load games.js last -->
     <script src="/static/js/games.js"></script>
+    <!-- Add this in the head section, after main.js -->
+    <script src="/static/js/games/game-of-life.js"></script>
 </head>
 <body class="bg-gray-100">
     <header class="relative bg-gradient-to-r from-indigo-900 via-blue-800 to-purple-900 text-white py-12 px-4 overflow-hidden">
@@ -484,7 +486,9 @@
                 </div>
 
                 <!-- Game Grid Container -->
-                <div id="game-of-life" class="max-w-[600px] mx-auto"></div>
+                <div id="game-of-life" class="mx-auto">
+                    <!-- Grid will be inserted here -->
+                </div>
 
                 <!-- Results Display -->
                 <div id="results" class="mt-4"></div>
