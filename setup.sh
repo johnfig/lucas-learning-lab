@@ -1,29 +1,31 @@
 #!/bin/bash
 
-# Optional cleanup flag
-if [ "$1" == "--clean" ]; then
-    echo "Cleaning up existing virtual environment..."
-    rm -rf .venv
-fi
+# Remove old venv if it exists
+rm -rf venv
 
-# Create virtual environment if it doesn't exist
-if [ ! -d ".venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv .venv
-fi
-
-# Activate virtual environment
-source .venv/bin/activate
+# Create and activate virtual environment with Python 3.11
+python3.11 -m venv venv
+source venv/bin/activate
 
 # Upgrade pip
-echo "Upgrading pip..."
 pip install --upgrade pip
 
-# Install requirements
-echo "Installing requirements..."
-pip install -r requirements.txt
+# Install PyTorch for M2 Mac (Apple Silicon)
+pip3 install torch torchvision torchaudio
 
-# Make instance directory if it doesn't exist
-mkdir -p instance
+# Install basic requirements
+pip install flask==3.0.2 flask-sqlalchemy==3.1.1 
+pip install fastapi uvicorn python-multipart
+pip install numpy gTTS==2.5.1
+pip install pyttsx3 vosk sounddevice
+
+# Install transformer-related packages
+pip install transformers sentencepiece accelerate safetensors
+
+# Initialize the database
+python3 database.py
+
+# Download models
+python3 download_models.py
 
 echo "Setup complete! Your environment is ready." 
