@@ -586,31 +586,65 @@
                     </div>
                 </div>
 
-                <!-- Progress Chart -->
-                <div class="bg-white p-4 rounded-lg">
-                    <canvas id="money-chart" class="w-full h-64"></canvas>
+                <!-- Replace the single chart div with these two sections -->
+                <div id="daily-section" class="bg-white p-4 rounded-lg mb-6">
+                    <h3 class="font-bold text-lg mb-3">Daily Progress 📈</h3>
+                    <canvas id="daily-chart" class="w-full h-64"></canvas>
                 </div>
 
-                <!-- Replace the three simulation buttons with this -->
+                <!-- Add this before the comparison chart -->
                 <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                    <h3 class="font-bold text-lg mb-3">Compare Strategies! 📊</h3>
-                    <div class="text-center">
-                        <button id="simulate-comparison" 
-                                onclick="simulateAllStrategies()" 
-                                data-original-text="Compare All Strategies"
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg">Compare Investment Strategies 📊</h3>
+                        <button onclick="simulateAllStrategies()" 
+                                id="simulate-comparison" 
+                                data-original-text="Run 5-Year Simulation"
                                 class="bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600 transition-colors">
-                            Compare All Strategies
+                            Run 5-Year Simulation
                         </button>
-                        <div class="mt-4 text-sm text-gray-600">
-                            Watch how different strategies grow over 5 years!
-                            <ul class="mt-2 text-left list-disc list-inside">
-                                <li>Basic: Only doing chores ($100/month)</li>
-                                <li>Savings: Homework + Monthly saving ($200/month + 3% annual interest)</li>
-                                <li>Investment: Helping + Monthly investing ($300/month + 7% annual returns)</li>
-                            </ul>
+                    </div>
+                    
+                    <div class="text-sm text-gray-600">
+                        <p class="mb-2">Watch how different strategies grow over 5 years:</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Basic Strategy: Only doing chores ($100/month)</li>
+                            <li>Savings Strategy: Homework + Monthly saving ($200/month + 3% annual interest)</li>
+                            <li>Investment Strategy: Helping + Monthly investing ($300/month + 7% annual returns)</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="simulation-results" class="mt-4 bg-white p-4 rounded-lg hidden">
+                        <h4 class="font-bold mb-2">Simulation Results:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <div class="text-gray-600">Basic Strategy</div>
+                                <div id="basic-result" class="text-xl font-bold">$0</div>
+                            </div>
+                            <div class="p-3 bg-blue-50 rounded-lg">
+                                <div class="text-gray-600">Savings Strategy</div>
+                                <div id="savings-result" class="text-xl font-bold text-blue-600">$0</div>
+                                <div id="savings-difference" class="text-sm text-blue-600">+$0 vs Basic</div>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-lg">
+                                <div class="text-gray-600">Investment Strategy</div>
+                                <div id="investment-result" class="text-xl font-bold text-purple-600">$0</div>
+                                <div id="investment-difference" class="text-sm text-purple-600">+$0 vs Basic</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <canvas id="comparison-chart" class="w-full h-96"></canvas>
+                </div>
+
+                <!-- Add a button to switch back to daily view -->
+                <button onclick="switchToDailyView()" 
+                        id="return-to-daily" 
+                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mb-4"
+                        style="display: none;">
+                    Return to Daily View
+                </button>
             </div>
         </div>
     </div>
