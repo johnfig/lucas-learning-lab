@@ -19,6 +19,9 @@
     <script src="/static/js/games.js"></script>
     <!-- Add this in the head section, after main.js -->
     <script src="/static/js/games/game-of-life.js"></script>
+    <!-- Add this in the head section with the other game scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/games/money-games.js"></script>
 </head>
 <body class="bg-gray-100">
     <header class="relative bg-gradient-to-r from-indigo-900 via-blue-800 to-purple-900 text-white py-12 px-4 overflow-hidden">
@@ -91,6 +94,11 @@
                 <button onclick="switchTab('game-of-life-tab')" 
                         class="tab-button px-6 py-3 text-lg font-semibold transition-colors duration-200 relative">
                     🎲 Game of Life
+                    <div class="tab-indicator"></div>
+                </button>
+                <button onclick="switchTab('money-games')" 
+                        class="tab-button px-6 py-3 text-lg font-semibold transition-colors duration-200 relative">
+                    💰 Money Games
                     <div class="tab-indicator"></div>
                 </button>
             </div>
@@ -502,6 +510,85 @@
                         <li>Any live cell with more than three live neighbors dies (overpopulation)</li>
                         <li>Any dead cell with exactly three live neighbors becomes a live cell (reproduction)</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Money Games Tab -->
+    <div id="money-games" class="tab-content hidden mt-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-center">Money Master 💰</h2>
+                
+                <!-- Game Dashboard -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Your Money 💵</h3>
+                        <p class="text-2xl font-bold text-green-600">$<span id="money-balance">0</span></p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Savings 🏦</h3>
+                        <p class="text-2xl font-bold text-blue-600">$<span id="savings-balance">0</span></p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Investments 📈</h3>
+                        <p class="text-2xl font-bold text-purple-600">$<span id="investment-balance">0</span></p>
+                    </div>
+                </div>
+
+                <!-- Actions Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Earn Money Section -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-3">Earn Money 💪</h3>
+                        <div class="space-y-3">
+                            <button onclick="earnMoney('chores')" 
+                                    class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                Do Chores ($5)
+                            </button>
+                            <button onclick="earnMoney('homework')" 
+                                    class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                Complete Homework ($10)
+                            </button>
+                            <button onclick="earnMoney('help')" 
+                                    class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                Help Neighbors ($15)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Save & Invest Section -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-3">Save & Invest 📊</h3>
+                        <div class="space-y-3">
+                            <button onclick="saveAmount()" 
+                                    class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Save Money (3% Interest)
+                            </button>
+                            <button onclick="invest()" 
+                                    class="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                                Invest (7% Average Return)
+                            </button>
+                            <button onclick="checkProgress()" 
+                                    class="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                                Check Progress 📊
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Education Section -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h3 class="font-bold text-lg mb-3">Money Tips 💡</h3>
+                    <div id="money-tip" class="text-gray-700">
+                        Start earning and saving money to learn about financial growth!
+                    </div>
+                </div>
+
+                <!-- Progress Chart -->
+                <div class="bg-white p-4 rounded-lg">
+                    <canvas id="money-chart" class="w-full h-64"></canvas>
                 </div>
             </div>
         </div>
